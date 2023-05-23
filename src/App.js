@@ -1,9 +1,16 @@
 import React from 'react'
 import { ReactDOM } from 'react'
-import Navbar from './components/Navbar'
+import Banner from './components/Banner'
+import Greeting from './components/Greeting'
+import RegistrationForm from './components/RegistrationForm'
 
 export default function App() {
   return (
-    <Navbar />
+    <div>
+      <Banner />
+      <Greeting />
+      <RegistrationForm />
+    </div>
+
   )
 }
