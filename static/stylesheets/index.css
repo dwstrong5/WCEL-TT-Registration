@@ -1,0 +1,125 @@
+.logo-container {
+    display: flex;
+    justify-content: center;
+    object-fit: cover;
+    padding: 1rem 
+}
+    
+.logo {
+    width: 30rem;
+    height: auto;
+}
+
+.banner-container {
+    background-color: #1cbbb4;
+    width: 100%;
+    height: 30rem;
+    display: flex;
+    align-items: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+}
+
+.greeting-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
+.form-container > form {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    width:40vw;
+    margin-left:30vw;
+}
+
+.services-container, .relationship-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px 20px;
+    margin: 8px 0;
+}
+
+.services-container > label, .relationship-container > label{
+    padding-right: 8px;
+}
+
+.language-options {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px 20px;
+    margin: 8px 0;
+}
+
+.add-button {
+    height: 3rem;
+    width: 10rem;
+    align-self: center;
+    margin: 0.75rem;
+    color: white;
+    font-size: 14pt;
+    background-color: rgb(0,174,239);
+    border: thin solid white;
+    border-radius: 8px;
+}
+
+.add-button:hover {
+    background-color: rgb(0, 151, 239);
+
+}
+
+input[type=text], input[type=email], input[type=number], input[type=tel], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    height: 3rem;
+    width: 10rem;
+    margin: 0.75rem;
+    background-color: #46C646;
+    color: #fff;
+    font-size: 14pt;
+    border: thin solid white;
+    border-radius: 8px;
+    align-self: center;
+}
+
+input[type=submit]:hover {
+    background-color: #0A8A0A;
+}
+
+.footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    width:100%;
+    align-items: center;
+    background-color: #1cbbb4;
+    color:#ffffff;
+    font-size: 12pt;
+    margin-top: 5rem;
+}
+
+.footer img {
+    height:36px;
+    width: auto;
+    padding: .5rem .5rem 0 0;
+}
