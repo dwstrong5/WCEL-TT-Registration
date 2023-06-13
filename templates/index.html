@@ -21,19 +21,20 @@
 <div class="greeting-container">
     <h1>Welcome to Toddler Time!</h1>
     <p>Please provide the following information to complete registration.</p>
+    <small>* indicates required fields.</small>
 </div>
 
 
 <div class='form-container'>
     <form action="confirm" method="POST">
-        <label for="parent-name">Your full name:</label>
+        <label for="parent-name">*Your full name:</label>
         <input type="text" id="parent-name" name="parent-name" placeholder='ex: John Smith' required autofocus />
 
-        <label for="child-name">Your child's full name:</label>
+        <label for="child-name">*Your child's full name:</label>
         <input type="text" id="child-name" name="child-name" placeholder='ex: Abby Smith' required />
 
-        <label for="child-age">How old is your child?</label>
-        <input type="number" id="child-age" name="child-age" required min="0" max="5" value="1" />
+        <label for="child-age">*How old is your child?</label>
+        <input type="number" id="child-age" name="child-age" required min="0" max="5" value="1" required/>
 
         <label for="receiving-services">Are they receiving services at WCEL?</label>
         <div class='services-container'>
@@ -59,12 +60,37 @@
 
             <input type="radio" id="relationship" name="relationship" value="Ganny" />
             <label>Nanny</label>
+
+            <input type="text" id="relationship" name="relationship" placeholder="Other..." />
         </div>
 
-        <label for="email">Email address:</label>
+
+        <label for="consultation-photo-permission">*I give permission to WCEL to utilize photos and/or video of my child in the classroom space and to share with other WCEL staff for therapeutic consultation.</label>
+        <div class='photo-permission-container'>
+            <input type="radio" id="consultation-photo-permission" name="consultation-photo-permission" value="Yes" required />
+            <label>Yes</label>
+
+            <input type="radio" id="consultation-photo-permission" name="consultation-photo-permission" value="No" required />
+            <label>No</label>
+        </div>
+
+        <label for="outreach-photo-permission">*I give consent without reservation for WCEL to utilize and own photos and/or videos of my child and/or me in displays, publications, social media, WCEL website, events, and fundraisers.</label>
+        <div class='photo-permission-container'>
+            <input type="radio" id="outreach-photo-permission" name="outreach-photo-permission" value="Yes" required/>
+            <label>Yes</label>
+
+            <input type="radio" id="outreach-photo-permission" name="outreach-photo-permission" value="No" required/>
+            <label>No</label>
+        </div>
+
+
+
+
+
+        <label for="email">*Email address:</label>
         <input type="email" id="email" name="email" placeholder='ex: John.Smith@gmail.com' required />
 
-        <label for="phone">Contact Number:</label>
+        <label for="phone">*Contact Number:</label>
         <input type="tel" id="phone" name="phone" pattern="([0-9]{3}) [0-9]{3}-[0-9]{4})" placeholder='ex: (123) 456-7890' required />
 
         <label for="languages">Do you speak any additional languages? If so, please select all that apply.</label>
@@ -127,6 +153,6 @@
     </a>
     Whatcom Center for Early Learning
 </div>
-<script src="../static/index.js" defer></script>
+<script src="../static/addOrRemoveChild.js" defer></script>
 
 {% endblock %}
