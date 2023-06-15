@@ -1,14 +1,15 @@
+let childCount = 1;
 
 // Get reference to add button
 const addButton = document.querySelector(".add-button");
 addButton.addEventListener('click', addChildEntry);
-
 
 function addChildEntry() {
     document.querySelector('.services-container').insertAdjacentElement('afterend',createChildEntry())
 }
 
 function createChildEntry() {
+    childCount += 1;
     const res = document.createElement('div')
     res.className="added-child-container"
     const nameLabel= document.createElement('label')
@@ -17,8 +18,8 @@ function createChildEntry() {
     const nameInput = document.createElement('input')
     nameInput.type = "text"
     nameInput.placeholder = "ex: Jane Smith"
-    nameInput.id = "child-name"
-    nameInput.name = "child-name"
+    nameInput.id = `child-name-${childCount}`
+    nameInput.name = `child-name-${childCount}`
 
     const ageLabel = document.createElement('label')
     ageLabel.innerHTML = "How old is your child?"
@@ -28,8 +29,8 @@ function createChildEntry() {
     agePicker.min = 0
     agePicker.max = 5
     agePicker.defaultValue = 1
-    agePicker.id = "child-age"
-    agePicker.name = "child-age"
+    agePicker.id = `child-age-${childCount}`
+    agePicker.name = `child-age-${childCount}`
 
     const servicesLabel = document.createElement('label')
     servicesLabel.innerHTML = "Are they receiving services at WCEL?"
@@ -39,22 +40,22 @@ function createChildEntry() {
     const yesRadioBtn = document.createElement('input')
     yesRadioBtn.type="radio"
     yesRadioBtn.value="Yes"
-    yesRadioBtn.id = "receiving-services"
-    yesRadioBtn.name = "receiving services"
+    yesRadioBtn.id = `receiving-services-${childCount}`
+    yesRadioBtn.name = `receiving-services-${childCount}`
 
     const yesLabel = document.createElement('label');
-    yesLabel.id = "receiving-services"
+    yesLabel.id = `receiving-services-${childCount}`
     yesLabel.innerText = "Yes"
 
 
     const noRadioBtn = document.createElement('input')
     noRadioBtn.type="radio"
     noRadioBtn.value="No"
-    noRadioBtn.id = "receiving-services"
-    noRadioBtn.name = "receiving services"
+    noRadioBtn.id = `receiving-services-${childCount}`
+    noRadioBtn.name = `receiving-services-${childCount}`
 
     const noLabel = document.createElement('label');
-    noLabel.id = "receiving-services"
+    noLabel.id = `receiving-services-${childCount}`
     noLabel.innerText = "No"
 
     servicesContainer.append(yesRadioBtn, yesLabel, noRadioBtn, noLabel)
@@ -74,5 +75,6 @@ function createChildEntry() {
 
 function removeItem(event) {
     event.target.parentElement.remove();
+    childCount -= 1;
 }
 

@@ -15,7 +15,7 @@ app.secret_key = os.urandom(24)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("register.html")
 
 @app.route("/confirm", methods=["POST"])
 def confirm():
@@ -28,11 +28,19 @@ def confirm():
             if(sub_item != ''):
                 entry = entry + str(sub_item) + ";"
             new_entry[item[0]] = entry[:-1]
-    id = entries.insert_one(new_entry)
+    #id = entries.insert_one(new_entry)
     print(new_entry)
+    res = []
+    #for key in entries.find_one(id.inserted_id):
+    for key in new_entry:
+        if "child-name" in key:
+            #res.append(entries.find_one(id.inserted_id).get(key))
+            res.append(new_entry.get(key))
+    
 
-    #return render_template("confirmation.html", entry=entries.find_one(id.inserted_id))
-    return render_template("confirmation.html")
+    return render_template("confirmation.html", entry=res)
 
-
+@app.route("/checkin")
+def checkin():
+    return render_template("checkin.html")
 

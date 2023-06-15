@@ -2,14 +2,24 @@
 
 {% block header %}
 <title>Registration Confirmation</title>
+<link rel="stylesheet" href="../static/stylesheets/confirmation.css">
 {% endblock %}
 
 {% block body %}
 
-<h1>Confirm check-in:</h1>
-<ul>
-
-
-</ul>
+<div class="confirmation-container">
+    <h1>Welcome to Toddler Time!</h1>
+    <h2>Registration has been confirmed for:</h2>
+    <ul>
+        {% for item in entry %}
+            <li>{{item}}</li>
+        {% endfor %}
+    </ul>
+    
+    <a href="/">
+        <button class="return-button">Return</button>
+    </a>
+    
+</div>
 
 {% endblock %}
