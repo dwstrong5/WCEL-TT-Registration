@@ -116,7 +116,7 @@ label {
     padding-top: 0.5rem;
 }
 
-input[type=text], input[type=email], input[type=number], input[type=tel], select {
+input[type=text], input[type=email], input[type=number], input[type=date], input[type=tel], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -130,8 +130,7 @@ input[type=submit] {
     height: 3rem;
     width: 10rem;
     margin: 0.75rem;
-    background-color: #00a652
-    ;
+    background-color: #00a652;
     color: #fff;
     font-size: 14pt;
     border: thin solid white;

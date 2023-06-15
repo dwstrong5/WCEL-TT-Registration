@@ -1,0 +1,83 @@
+body {
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    object-fit: cover;
+    padding: 1rem 
+}
+    
+.logo {
+    width: 30rem;
+    height: auto;
+}
+
+.banner-container {
+    background-color: #1cbbb4;
+    width: 100%;
+    height: 30rem;
+    display: flex;
+    align-items: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+}
+
+.check-in-greeting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.check-in-greeting-container > p {
+    margin: 0.5rem;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
+.email-container {
+    width: 400px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 2rem;
+    padding: 1rem
+}
+
+input[type=text], input[type=email], input[type=number], input[type=date], input[type=tel], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    height: 3rem;
+    width: 10rem;
+    margin: 0.75rem;
+    background-color: #00a652;
+    color: #fff;
+    font-size: 14pt;
+    border: thin solid white;
+    border-radius: 8px;
+    align-self: center;
+}
+
+input[type=submit]:hover {
+    background-color: #0A8A0A;
+    cursor: pointer;
+}

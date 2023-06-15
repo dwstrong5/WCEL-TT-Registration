@@ -1,17 +1,32 @@
 {% extends "layout.html" %}
 
 {% block header %}
-<title>Toddler Time Check-in</title>
+<title>WCEL | Check-in</title>
 <link rel="stylesheet" href="../static/stylesheets/checkin.css">
 {% endblock %}
 
 {% block body %}
-
-<div class="check-in-container">
+<div class="logo-container">
+    <a href='https://www.wcel.net'>
+        <img class="logo" src="../static/images/1.png" alt="50th Anniversary Logo for Whatcom Center for Early Learning" />
+    </a>
+</div>
+<div class="banner-container">
+    <img class="banner-image" src="../static/images/tt-banner.jpg" alt="Four children holding heart-shaped objects in outstretched hands over a wooden table."/>
+</div>
+<div class="check-in-greeting-container">
     <h1>Welcome to Toddler Time!</h1>
     <p>Please supply your email below.</p>
-    <p>If this is your first time joining us, please complete your registration <a href="register">here.</a></p>
+    <p>If this is your first time joining us, please complete your registration <a href="/">here.</a></p>
     <small>* indicates required fields.</small>
 </div>
+
+<div class="email-container">
+    <form action="" method="post"></form>
+    <label for="email">*Enter your E-mail address:</label>
+    <input type="email" name="email" id="email" required> 
+</div>
+<input type="submit" />
+
 
 {% endblock %}
