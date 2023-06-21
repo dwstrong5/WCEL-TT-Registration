@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import pymongo, os
-from werkzeug.datastructures import ImmutableMultiDict
 
 app = Flask(__name__)
 
@@ -28,14 +27,14 @@ def confirm():
             if(sub_item != ''):
                 entry = entry + str(sub_item) + ";"
             new_entry[item[0]] = entry[:-1]
-    #id = entries.insert_one(new_entry)
+    id = entries.insert_one(new_entry)
     print(new_entry)
     res = []
-    #for key in entries.find_one(id.inserted_id):
-    for key in new_entry:
+    for key in entries.find_one(id.inserted_id):
+    #for key in new_entry:
         if "child-name" in key:
-            #res.append(entries.find_one(id.inserted_id).get(key))
-            res.append(new_entry.get(key))
+            res.append(entries.find_one(id.inserted_id).get(key))
+            #res.append(new_entry.get(key))
     
 
     return render_template("confirmation.html", entry=res)

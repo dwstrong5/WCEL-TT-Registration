@@ -25,12 +25,17 @@ function createChildEntry() {
     ageLabel.innerHTML = "How old is your child?"
 
     const agePicker = document.createElement('input')
-    agePicker.type = "number"
-    agePicker.min = 0
-    agePicker.max = 5
-    agePicker.defaultValue = 1
+    agePicker.type = "text"
+    agePicker.placeholder="YYYY-MM-DD"
     agePicker.id = `child-age-${childCount}`
     agePicker.name = `child-age-${childCount}`
+
+    agePicker.onfocus = () => {
+        agePicker.type = "date"
+    }
+    agePicker.onblur = () => {
+        agePicker.type = "text"
+    };
 
     const servicesLabel = document.createElement('label')
     servicesLabel.innerHTML = "Are they receiving services at WCEL?"
