@@ -7,6 +7,10 @@
 
 {% block body %}
 
+{% if message %}
+
+{% endif %}
+
 <div class="logo-container">
     <a href='https://www.wcel.net'>
         <img class="logo" src="../static/images/1.png" alt="50th Anniversary Logo for Whatcom Center for Early Learning" />
@@ -142,7 +146,7 @@
             </div>
             <label for="reference">How did you hear about us?</label>
             <input type="text" id="reference" name="reference" placeholder='ex: My child has previously received services at WCEL' default="" />
-           <input type="submit" /> 
+           <input type="submit" id="submit"/> 
     </form>
 </div>
 

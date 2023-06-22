@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 import pymongo, os
 
@@ -43,3 +43,10 @@ def confirm():
 def checkin():
     return render_template("checkin.html")
 
+@app.route("/check_existing", methods=["POST"])
+def check_existing():
+    if entries.find_one({"phone": request.form["phone"]}):
+        return render_template("test.html", entry=entries.find_one({"phone": request.form["phone"]}))
+    else:
+        return redirect("/")
+                
