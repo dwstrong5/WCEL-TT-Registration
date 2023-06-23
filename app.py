@@ -46,7 +46,12 @@ def checkin():
 @app.route("/check_existing", methods=["POST"])
 def check_existing():
     if entries.find_one({"phone": request.form["phone"]}):
-        return render_template("test.html", entry=entries.find_one({"phone": request.form["phone"]}))
+        return render_template("review.html", entry=entries.find_one({"phone": request.form["phone"]}))
     else:
         return redirect("/")
                 
+                
+                
+                
+if __name__ == "__main__":
+    app.run(debug=True)

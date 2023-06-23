@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="../static/stylesheets/review.css">
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="logo-container">
+    <a href='https://www.wcel.net'>
+        <img class="logo" src="../static/images/1.png" alt="50th Anniversary Logo for Whatcom Center for Early Learning" />
+    </a>
+</div>
+
+<div class="content-container">
+    <a href='checkin'>
+        <img class="back-arrow" src="../static/images/blue-back-chevron-transparent.png" alt="Blue colored back-chevron with transparent background." />
+    </a>
+    <div class="review-container">
+        <h1>Review:</h1>
+        <h3>Last check-in: {{entry.get('date')}}</h3>
+        <h3>Your name: {{entry.get('parent-name')}}</h3>
+        <h3>Phone number: {{entry.get('phone')}}</h3>
+        <h3>Email address: {{entry.get('email')}}</h3>
+        
+        {% set count = namespace(value = 1) %}
+        {% for key in entry %}
+            {% if "child-name" in key %}
+                <h3>Child {{count.value}}: {{entry.get(key)}}</h3>
+                {% set count.value = count.value + 1 %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="buttons-container">
+    <button class="edit-button">Edit</button>
+    <button type="submit">Submit</button>
+</div>
+
+
+
+<div class="footer">
+    <a href="https://github.com/dwstrong5/tt-registration">
+        <img src="../static/images/github-mark-white.png" alt="GitLab logo with transparent background" />
+    </a>
+    Whatcom Center for Early Learning
+</div>
+
+{% endblock %}
