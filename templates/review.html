@@ -14,6 +14,8 @@
     </a>
 </div>
 
+<div class="main-content-container">
+
 <div class="content-container">
     <a href='checkin'>
         <img class="back-arrow" src="../static/images/blue-back-chevron-transparent.png" alt="Blue colored back-chevron with transparent background." />
@@ -21,14 +23,14 @@
     <div class="review-container">
         <h1>Review:</h1>
         <h3>Last check-in: {{entry.get('date')}}</h3>
-        <h3>Your name: {{entry.get('parent-name')}}</h3>
-        <h3>Phone number: {{entry.get('phone')}}</h3>
-        <h3>Email address: {{entry.get('email')}}</h3>
+        <h3 id="parent-name">Your name: {{entry.get('parent-name')}}</h3>
+        <h3 id="parent-phone">Phone number: {{entry.get('phone')}}</h3>
+        <h3 id="parent-email">Email address: {{entry.get('email')}}</h3>
         
         {% set count = namespace(value = 1) %}
         {% for key in entry %}
             {% if "child-name" in key %}
-                <h3>Child {{count.value}}: {{entry.get(key)}}</h3>
+                <h3 class="child-name">Child {{count.value}}: {{entry.get(key)}}</h3>
                 {% set count.value = count.value + 1 %}
             {% endif %}
         {% endfor %}
@@ -36,11 +38,11 @@
 </div>
 
 <div class="buttons-container">
-    <button class="edit-button">Edit</button>
-    <button type="submit">Submit</button>
+    <button id="edit-button" class="edit-button">Edit</button>
+    <button id ="submit-button"type="submit">Submit</button>
 </div>
 
-
+</div>
 
 <div class="footer">
     <a href="https://github.com/dwstrong5/tt-registration">
@@ -48,5 +50,6 @@
     </a>
     Whatcom Center for Early Learning
 </div>
+<script src="../static/scripts/changePreviousInfo.js"></script>
 
 {% endblock %}
