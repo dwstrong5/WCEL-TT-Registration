@@ -11,14 +11,12 @@ getChildCount = () => {
         id = String(children[i].id)
         if(id.includes('child-container')) count +=1
     }
-    console.log
     return count;
 }
 
 count = getChildCount()
 console.log(count)
 addButton.addEventListener('click', (event) => {
-    console.log(count)
 
     event.preventDefault();
     count += 1;
@@ -50,6 +48,7 @@ addButton.addEventListener('click', (event) => {
     childContainer.append(nameLabelContainer, nameInput)
 
     addButton.parentElement.insertBefore(childContainer, addButton)
+    updateCounts()
 })
 
 remButton.addEventListener('click', removeItem)
@@ -57,5 +56,19 @@ remButton.addEventListener('click', removeItem)
 function removeItem(event) {
     event.preventDefault();
     event.target.parentElement.parentElement.parentElement.remove();
+    updateCounts()
     count -= 1;
+}
+
+function updateCounts() {
+    let tmpCount = 1;
+    children = document.querySelector('form').childNodes;
+
+    for (let i = 0; i < children.length; i++) {
+        id = String(children[i].id)
+        if(id.includes('child-container')) {
+            children[i].children[0].children[0].innerHTML = `Child ${tmpCount}:`
+            tmpCount += 1
+        }
+    }
 }
