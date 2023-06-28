@@ -61,7 +61,6 @@ h1 {
 }
 
 .relationship-container > input[type=text] {
-    width: auto;
     margin: 0 1.25rem;
 }
 

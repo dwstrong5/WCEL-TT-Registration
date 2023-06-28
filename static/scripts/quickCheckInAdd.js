@@ -1,22 +1,31 @@
 const addButton = document.querySelector('.add-button')
 const remButton = document.querySelector('.fa-close')
 
+remButton.parentNode.addEventListener('click', (event) => {event.preventDefault()})
+
 getChildCount = () => {
     let count = 0;
     let id = ""
     children = document.querySelector('form').childNodes;
     for (let i = 0; i < children.length; i ++) {
         id = String(children[i].id)
-        if(id.includes('child-name')) count +=1
+        if(id.includes('child-container')) count +=1
     }
+    console.log
     return count;
 }
 
 count = getChildCount()
+console.log(count)
 addButton.addEventListener('click', (event) => {
+    console.log(count)
 
     event.preventDefault();
     count += 1;
+
+    const childContainer = document.createElement('div')
+    childContainer.id = 'child-container'
+
     const nameLabelContainer = document.createElement('div')
     nameLabelContainer.classList.add('child-label-container')
 
@@ -25,9 +34,11 @@ addButton.addEventListener('click', (event) => {
         
     const removeB = document.createElement('button')
     removeB.classList.add('btn', 'remove-button')
+    removeB.addEventListener('click', (event) => {event.preventDefault()})
 
     const x = document.createElement('i')
     x.classList.add('fa', 'fa-close')
+    x.addEventListener('click', removeItem)
     removeB.appendChild(x)
 
     nameLabelContainer.append(nameLabel, removeB)
@@ -36,11 +47,15 @@ addButton.addEventListener('click', (event) => {
     nameInput.type = "text"
     nameInput.id = `child-name-${count}`
 
-    addButton.parentElement.insertBefore(nameLabelContainer, addButton)
-    addButton.parentElement.insertBefore(nameInput, addButton)
+    childContainer.append(nameLabelContainer, nameInput)
+
+    addButton.parentElement.insertBefore(childContainer, addButton)
 })
 
+remButton.addEventListener('click', removeItem)
+
 function removeItem(event) {
-    event.target.parentElement.remove();
+    event.preventDefault();
+    event.target.parentElement.parentElement.parentElement.remove();
     count -= 1;
 }

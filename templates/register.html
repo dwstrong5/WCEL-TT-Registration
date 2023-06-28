@@ -31,24 +31,24 @@
 
 
 <div class='form-container'>
-    <form action="confirm" method="POST">
+    <form action="confirm-registration" method="POST">
         <label for="parent-name">*Your full name:</label>
         <input type="text" id="parent-name" name="parent-name" placeholder='ex: John Smith' required autofocus />
 
-        <label for="child-name">*Your child's full name:</label>
-        <input type="text" id="child-name" name="child-name" placeholder='ex: Abby Smith' required />
+        <label for="child-name-1">*Your child's full name:</label>
+        <input type="text" id="child-name-1" name="child-name-1" placeholder='ex: Abby Smith' required />
 
-        <label for="child-age">*Your child's date of birth:</label>
-        <input type="text" id="child-age" name="child-age" placeholder="YYYY-MM-DD" required 
+        <label for="child-age-1">*Your child's date of birth:</label>
+        <input type="text" id="child-age-1" name="child-age-1" placeholder="YYYY-MM-DD" required 
             onfocus="(this.type='date')"
             onblur="(this.type='text')"/>
 
-        <label for="receiving-services">Are they receiving services at WCEL?</label>
+        <label for="receiving-services-1">Are they receiving services at WCEL?</label>
         <div class='services-container'>
-            <input type="radio" id="receiving-services" name="receiving-services" value="yes" />
+            <input type="radio" id="receiving-services-1" name="receiving-services-1" value="yes" />
             <label>Yes</label>
 
-            <input type="radio" id="receiving-services" name="receiving-services" value="no" />
+            <input type="radio" id="receiving-services-1" name="receiving-services-1" value="no" />
             <label>No</label>
         </div>
 

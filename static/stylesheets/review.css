@@ -10,6 +10,11 @@ body {
 .content-container {
     display: flex;
     margin-top: 2vh;
+    width:40vw;
+}
+
+.review-container {
+    width:100%
 }
 
 .review-container > h1 {
@@ -51,6 +56,10 @@ form {
 
 label {
     padding-top: 0.5rem;
+}
+
+#child-container {
+    width: 100%
 }
 
 .child-label-container {
