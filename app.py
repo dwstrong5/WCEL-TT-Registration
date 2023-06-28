@@ -13,7 +13,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 def generateNewEntry(data):
-    print(data)
     new_entry = dict()
     new_entry["date"] = datetime.today().strftime('%b-%d-%Y')
     for item in list(data.lists()):
@@ -45,6 +44,8 @@ def confirmRegistration():
 
 @app.route("/confirm-checkin", methods=["POST"])
 def confirmCheckin():
+    newEntry = generateNewEntry(request.form)
+    print(request.form)
     id = entries.insert_one(generateNewEntry(request.form))
     if(id):
         return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
@@ -66,4 +67,4 @@ def check_existing():
                 
                 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

@@ -3,6 +3,7 @@
 {% block header %}
 <link rel="stylesheet" href="../static/stylesheets/review.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>WCEL | Check-in</title>
 {% endblock %}
 
 {% block body %}
@@ -22,25 +23,26 @@
         </a>
         <div class="review-container">
             <h1 class="section-title">Review:</h1>
+            <small>* indicates required fields.</small>
             <h4>Last check-in: {{entry.get('date')}}</h4>
             <form action="confirm-checkin" method="post">
-                <label for="parent-name">Your name:</label>
-                <input type="text" name="parent-name" id="parent-name" value="{{entry.get('parent-name')}}">
-                <label for="phone">Phone number:</label>
-                <input type="tel" name="phone" id="phone" value="{{entry.get('phone')}}">
-                <label for="email">Email address:</label>
-                <input type="email" name="email" id="email" value="{{entry.get('email')}}">
+                <label for="parent-name">*Your name:</label>
+                <input type="text" name="parent-name" id="parent-name" value="{{entry.get('parent-name')}}" required>
+                <label for="phone">*Phone number:</label>
+                <input type="tel" name="phone" id="phone" value="{{entry.get('phone')}}" required>
+                <label for="email">*Email address:</label>
+                <input type="email" name="email" id="email" value="{{entry.get('email')}}" required>
                 {% set count = namespace(value = 1) %}
                 {% for key in entry %}
                     {% if "child-name" in key %}
                     <div id="child-container">
                         <div class="child-label-container">
-                            <label for="child-name-{{count.value}}">Child {{count.value}}:</label>
+                            <label for="child-name-{{count.value}}">*Child {{count.value}}:</label>
                             {% if count.value > 1 %}
                             <button class="btn remove-button"><i class="fa fa-close"></i></button>
                             {% endif %}
                         </div>
-                        <input type="text" name="child-name-{{count.value}}" id="child-name-{{count.value}}" value="{{entry.get(key)}}">
+                        <input type="text" name="child-name-{{count.value}}" id="child-name-{{count.value}}" value="{{entry.get(key)}}" required>
                         {% set count.value = count.value + 1 %}
                     </div>
                     {% endif %}
@@ -53,12 +55,5 @@
         </div>
     </div>
 
-<div class="footer">
-    <a href="https://github.com/dwstrong5/tt-registration">
-        <img src="../static/images/github-mark-white.png" alt="GitLab logo with transparent background" />
-    </a>
-    Whatcom Center for Early Learning
-</div>
 <script src="../static/scripts/quickCheckInAdd.js"></script>
-
 {% endblock %}
