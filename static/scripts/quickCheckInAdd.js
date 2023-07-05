@@ -1,7 +1,9 @@
 const addButton = document.querySelector('.add-button')
 const remButton = document.querySelector('.fa-close')
 
-remButton.parentNode.addEventListener('click', (event) => {event.preventDefault()})
+if (remButton) {
+    remButton.parentNode.addEventListener('click', (event) => {event.preventDefault()})
+}
 
 getChildCount = () => {
     let count = 0;
@@ -54,8 +56,9 @@ addButton.addEventListener('click', (event) => {
     updateCounts()
 })
 
-remButton.addEventListener('click', removeItem)
-
+if (remButton) {
+    remButton.addEventListener('click', removeItem)
+}
 function removeItem(event) {
     event.preventDefault();
     event.target.parentElement.parentElement.parentElement.remove();
