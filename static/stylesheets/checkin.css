@@ -5,17 +5,26 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
 }
 
 .logo-container {
     display: flex;
     justify-content: center;
-    object-fit: cover;
+    align-content: center;
+    width:100%;
     padding: 1rem 
+}
+
+.logo-container > a {
+display: flex;
+justify-content: center;
+align-items: center;
 }
     
 .logo {
-    width: 30rem;
+    width: 60%;
+    max-width: 30rem;
     height: auto;
 }
 
@@ -105,4 +114,71 @@ input[type=submit]:hover {
     height:3.5rem;
     width: auto;
     padding: .5rem .5rem 0 0;
+}
+
+@media screen and (max-width: 681px) {
+    body {
+        margin: 0;
+        background-color: #fff;
+    }
+
+    .form-container > form {
+        min-width: 90%;
+    }
+}
+
+@media screen and (max-width: 961px) {
+
+    .logo-container {
+        padding: 0;
+    }
+    .greeting-container {
+        margin: 0;
+    }
+
+    .content-container {
+        width: 100%;
+        height: 100%
+    }
+
+    div {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width:1281px) {
+
+
+    .check-in-greeting-container {
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .phone-container {
+        margin-top: 1rem;
+    }
+
+    .phone-sub-container {
+        margin: 0;
+        max-width: 90%;
+    }
+    .greeting-container > * {
+        word-wrap: break-word;
+    }
+    h1 {
+        font-size: max(1.5rem,5vw);
+    }
+
+    p {
+        text-align: center;
+    }
+
+    input[type="submit"] {
+        width: 40%;
+        font-size: 100%;
+        margin-top: 5%;
+    }
 }

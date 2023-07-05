@@ -6,27 +6,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="logo-container">
-    <a href='https://www.wcel.net'>
-        <img class="logo" src="../static/images/1.png" alt="50th Anniversary Logo for Whatcom Center for Early Learning" />
-    </a>
-</div>
-
-<div class="check-in-greeting-container">
-    <h1>Welcome to Toddler Time!</h1>
-    <p>Please supply your email below.</p>
-    <p>If this is your first time joining us, please complete your registration <a href="/">here.</a></p>
-    <small>* indicates required fields.</small>
-</div>
-
-<div class="phone-container">
-    <form action="check_existing" method="post">
-    <div class="phone-sub-container">
-        <label for="phone">*Enter your phone number:</label>
-        <input type="tel" id="phone" name="phone" pattern="([0-9]{3}) [0-9]{3}-[0-9]{4})" placeholder='ex: (123) 456-7890' required />
+<div class="content-container">
+    <div class="logo-container">
+        <a href='https://www.wcel.net'>
+            <img class="logo" src="../static/images/1.png" alt="50th Anniversary Logo for Whatcom Center for Early Learning" />
+        </a>
     </div>
-    <input type="submit" id="submit"/>
-    </form>
+    
+    <div class="check-in-greeting-container">
+        <h1>Welcome to Toddler Time!</h1>
+        <p>Please supply your email below.</p>
+        <p>If this is your first time joining us, please complete your registration <a href="/">here.</a></p>
+        <small>* indicates required fields.</small>
+    </div>
+    
+    <div class="phone-container">
+        <form action="check_existing" method="post">
+        <div class="phone-sub-container">
+            <label for="phone">*Enter your phone number:</label>
+            <input type="tel" id="phone" name="phone" pattern="([0-9]{3}) [0-9]{3}-[0-9]{4})" placeholder='ex: (123) 456-7890' required />
+        </div>
+        <input type="submit" id="submit"/>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
