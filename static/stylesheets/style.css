@@ -5,7 +5,7 @@
     src: url("../fonts/GlacialIndifference-Regular.woff2") format("woff2");
 }
 
-html body {
+html {
     margin: 0;
 }
 
