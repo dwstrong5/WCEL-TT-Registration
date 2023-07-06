@@ -16,6 +16,8 @@ def generateNewEntry(data):
     new_entry = dict()
     new_entry["date"] = datetime.today().strftime('%b-%d-%Y')
     for item in list(data.lists()):
+        if item[0] == 'phone' and item[1]:
+            print(standardize(item[1][0]))
         entry = ""
         for sub_item in item[1]:
             if(sub_item != ''):
@@ -29,6 +31,9 @@ def getChildNames(entry):
         if "child-name" in key:
             res.append(entry.get(key))
     return res
+
+def standardize(num):
+    return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
     
 @app.route("/")
 def index():
@@ -44,8 +49,6 @@ def confirmRegistration():
 
 @app.route("/confirm-checkin", methods=["POST"])
 def confirmCheckin():
-    newEntry = generateNewEntry(request.form)
-    print(request.form)
     id = entries.insert_one(generateNewEntry(request.form))
     if(id):
         return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
@@ -58,8 +61,8 @@ def checkin():
 
 @app.route("/check_existing", methods=["POST"])
 def check_existing():
-    if entries.find_one({"phone": request.form["phone"]}):
-        return render_template("review.html", entry=entries.find_one({"phone": request.form["phone"]}))
+    if entries.find_one({"phone": standardize(request.form["phone"])}):
+        return render_template("review.html", entry=entries.find_one({"phone": standardize(request.form["phone"])}))
     else:
         return redirect("/")
                 
