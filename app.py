@@ -39,32 +39,41 @@ def standardize(num):
 def index():
     return render_template("register.html")
 
-@app.route("/confirm-registration", methods=["POST"])
+@app.route("/confirm-registration", methods=["GET", "POST"])
 def confirmRegistration():
-    id = entries.insert_one(generateNewEntry(request.form))
-    if(id):
-        return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+    if request.method=="POST":
+        id = entries.insert_one(generateNewEntry(request.form))
+        if(id):
+            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+        else:
+            return redirect("/")
     else:
         return redirect("/")
 
-@app.route("/confirm-checkin", methods=["POST"])
+@app.route("/confirm-checkin", methods=["GET","POST"])
 def confirmCheckin():
-    id = entries.insert_one(generateNewEntry(request.form))
-    if(id):
-        return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+    if request.method == "POST":
+        id = entries.insert_one(generateNewEntry(request.form))
+        if(id):
+            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+        else:
+            return redirect("/")
     else:
-        return redirect("/")
+        return redirect("/checkin")
 
 @app.route("/checkin")
 def checkin():
     return render_template("checkin.html")
 
-@app.route("/check_existing", methods=["POST"])
+@app.route("/check_existing", methods=["GET","POST"])
 def check_existing():
-    if entries.find_one({"phone": standardize(request.form["phone"])}):
-        return render_template("review.html", entry=entries.find_one({"phone": standardize(request.form["phone"])}))
+    if request.method == "POST":
+        if entries.find_one({"phone": standardize(request.form["phone"])}):
+            return render_template("review.html", entry=entries.find_one({"phone": standardize(request.form["phone"])}))
+        else:
+            return redirect("/")
     else:
-        return redirect("/")
+        return redirect("/checkin")
                 
                 
                 
