@@ -185,6 +185,16 @@ input[type=submit]:hover {
     cursor: pointer;
 }
 
+#enableRecite {
+    position: absolute;
+    height: 64px;
+    right: 25%;
+}
+
+#enableRecite:hover {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 681px) {
     body {
         margin: 0;
@@ -197,6 +207,13 @@ input[type=submit]:hover {
     
     .greeting-container > p {
         font-size: 1rem;
+    }
+
+    #enableRecite {
+        position: absolute;
+        top: 5%;
+        right: 2.5%;
+        max-width: 64px;
     }
 }
 

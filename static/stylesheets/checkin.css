@@ -118,6 +118,16 @@ input[type=submit]:hover {
     padding: .5rem .5rem 0 0;
 }
 
+#enableRecite {
+    position: absolute;
+    height: 64px;
+    right: 25%;
+}
+
+#enableRecite:hover {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 681px) {
     body {
         margin: 0;
@@ -126,6 +136,13 @@ input[type=submit]:hover {
 
     .form-container > form {
         min-width: 90%;
+    }
+
+    #enableRecite {
+        position: absolute;
+        top: 5%;
+        right: 2.5%;
+        max-width: 64px;
     }
 }
 

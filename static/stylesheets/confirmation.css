@@ -36,6 +36,17 @@ button:hover {
   cursor: pointer;
 }
 
+#enableRecite {
+  position: absolute;
+  height: 64px;
+  right: 25%;
+  top: 2.5%
+}
+
+#enableRecite:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width:681px) {
 
   .confirmation-container {
@@ -63,4 +74,10 @@ button:hover {
       text-align: center;
   }
 
+  #enableRecite {
+    position: absolute;
+    top: 5%;
+    right: 2.5%;
+    max-width: 64px;
+  }
 }
