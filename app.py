@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
-import pymongo, os
+import pymongo, os, json, urllib.parse
 
 app = Flask(__name__)
 
 # Establish connection with database
-client = pymongo.MongoClient(open("config.txt").read())
+with open('config.txt') as f:
+    credentials = json.load(f)
+
+client = pymongo.MongoClient("mongodb+srv://" + credentials["username"] + ":" + str(urllib.parse.quote(credentials["password"])) +"@wcel-cluster.wtcxphf.mongodb.net/")
 db = client['toddler-time-registration']
 entries = db.get_collection('entries')
 
