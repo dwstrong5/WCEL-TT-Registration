@@ -13,10 +13,12 @@ body {
 
 .confirmation-container {
   padding-top: 5rem;
-  width: auto;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -37,10 +39,10 @@ button:hover {
 }
 
 #enableRecite {
-  position: absolute;
   height: 64px;
-  right: 25%;
-  top: 2.5%
+  position: sticky;
+  left: 80%;
+  top: 5%;
 }
 
 #enableRecite:hover {
@@ -74,10 +76,12 @@ button:hover {
       text-align: center;
   }
 
+}
+
+@media screen and (max-width: 961px) {
   #enableRecite {
-    position: absolute;
-    top: 5%;
-    right: 2.5%;
-    max-width: 64px;
-  }
+    left: 85%;
+    height: 48px;
+    width: auto;
+}
 }
