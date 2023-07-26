@@ -3,3 +3,4 @@ config.txt
 .venv
 venv/
 .azure
+node_modules

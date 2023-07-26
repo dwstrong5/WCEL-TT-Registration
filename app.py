@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
-import pymongo, os, json, urllib.parse
+import pymongo, os, json, certifi
+from pymongo.server_api import ServerApi
 
 app = Flask(__name__)
 
@@ -8,7 +9,15 @@ app = Flask(__name__)
 with open('config.txt') as f:
     credentials = json.load(f)
 
-client = pymongo.MongoClient("mongodb+srv://" + credentials["username"] + ":" + str(urllib.parse.quote(credentials["password"])) +"@wcel-cluster.wtcxphf.mongodb.net/")
+uri = "mongodb+srv://" + credentials["username"] + ":" + credentials["password"] + "@wcel-cluster.wtcxphf.mongodb.net/?retryWrites=true&w=majority"
+client = pymongo.MongoClient(uri, tlsCAFile=certifi.where())
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
 db = client['toddler-time-registration']
 entries = db.get_collection('entries')
 
@@ -19,13 +28,15 @@ def generateNewEntry(data):
     new_entry = dict()
     new_entry["date"] = datetime.today().strftime('%b-%d-%Y')
     for item in list(data.lists()):
-        if item[0] == 'phone' and item[1]:
-            print(standardize(item[1][0]))
+        curr_item = list(item)
+        if curr_item[0] == 'phone' and curr_item[1]:
+            curr_item[1][0] = standardize(curr_item[1][0])
         entry = ""
-        for sub_item in item[1]:
+        for sub_item in curr_item[1]:
             if(sub_item != ''):
                 entry = entry + str(sub_item) + ";"
-            new_entry[item[0]] = entry[:-1]
+            new_entry[curr_item[0]] = entry[:-1]
+    print(new_entry)
     return new_entry
     
 def getChildNames(entry):
@@ -77,8 +88,6 @@ def check_existing():
             return redirect("/")
     else:
         return redirect("/checkin")
-                
-                
                 
                 
 if __name__ == "__main__":
