@@ -5,6 +5,22 @@ from pymongo.server_api import ServerApi
 
 app = Flask(__name__)
 
+# Language options for registration
+languages = ["Latin", 
+             "Spanish", 
+             "Portugese", 
+             "German", 
+             "Japanese", 
+             "Korean", 
+             "Russian", 
+             "French", 
+             "Punjabi",
+             "Chinese",
+             "Mandarin",
+             "Arabic",
+             "Italian"
+             ]
+
 # Establish connection with database
 with open('config.txt') as f:
     credentials = json.load(f)
@@ -51,7 +67,7 @@ def standardize(num):
     
 @app.route("/")
 def index():
-    return render_template("register.html")
+    return render_template("register.html", languages = languages)
 
 @app.route("/confirm-registration", methods=["GET", "POST"])
 def confirmRegistration():

@@ -96,62 +96,22 @@
                 <label>No</label>
             </div>
     
-            <label for="email">*Email address:</label>
-            <input type="email" id="email" name="email" placeholder='ex: John.Smith@gmail.com' required />
+            <label for="email">Email address:</label>
+            <input type="email" id="email" name="email" placeholder='ex: John.Smith@gmail.com' />
     
-            <label for="phone">*Contact Number:</label>
-            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' required minlength="10"/>
+            <label for="phone">Contact Number:</label>
+            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' minlength="10"/>
     
             <label for="languages">Do you speak any additional languages? If so, please select all that apply.</label>
                 <div class='language-options'>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Latin" />
-                        <label>Latin</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Spanish" />
-                        <label>Spanish</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Portugese" />
-                        <label>Portugese</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="German" />
-                        <label>German</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Japanese" />
-                        <label>Japanese</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Korean" />
-                        <label>Korean</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Russian" />
-                        <label>Russian</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="French" />
-                        <label>French</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Punjabi" />
-                        <label>Punjabi</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Chinese" />
-                        <label>Chinese</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Arabic" />
-                        <label>Arabic</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="languages" name="languages" value="Italian" />
-                        <label>Italian</label>
-                    </div>
+
+                    {% for language in languages %}
+                        <div>
+                            <input type="checkbox" id="languages" name="languages" value={{language}}>
+                            <label>{{language}}</label>
+                        </div>
+                    {% endfor %}
+
                     <input type="text" id="languages" name="languages" placeholder='Other...' />
                 </div>
                 <label for="reference">How did you hear about us?</label>
