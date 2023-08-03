@@ -39,9 +39,7 @@
                     <div id="child-container">
                         <div class="child-label-container">
                             <label for="child-name-{{count.value}}">*Child {{count.value}}:</label>
-                            {% if count.value > 1 %}
                             <button class="btn remove-button"><i class="fa fa-close"></i></button>
-                            {% endif %}
                         </div>
                         <input type="text" name="child-name-{{count.value}}" id="child-name-{{count.value}}" value="{{entry.get(key)}}" required>
                         {% set count.value = count.value + 1 %}
@@ -50,7 +48,7 @@
                 {% endfor %}
                 <button class="add-button"><i class="fa fa-plus-circle fa-4x"></i></button>
                 <div class="buttons-container">
-                    <input type="submit" value="Submit">
+                    <input type="submit" class="submit-button "value="Submit">
                 </div>
             </form>
         </div>

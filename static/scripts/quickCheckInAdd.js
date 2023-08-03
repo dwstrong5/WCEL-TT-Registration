@@ -1,6 +1,8 @@
 const addButton = document.querySelector('.add-button')
 const remButton = document.querySelector('.fa-close')
-
+const submitButton = document.querySelector('.submit-button')
+const form = document.querySelector('form');
+console.log(submitButton)
 if (remButton) {
     remButton.parentNode.addEventListener('click', (event) => {event.preventDefault()})
 }
@@ -59,6 +61,17 @@ addButton.addEventListener('click', (event) => {
 if (remButton) {
     remButton.addEventListener('click', removeItem)
 }
+
+submitButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    
+    if (getChildCount() === 0) {
+        alert("You must register at least one child.");
+    } else {
+        form.submit();
+    }
+});
+
 function removeItem(event) {
     event.preventDefault();
     event.target.parentElement.parentElement.parentElement.remove();
