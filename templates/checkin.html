@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+<script src="../static/scripts/formatPhone.js"></script>
 <div class="content-container">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
     <div class="logo-container">
@@ -25,7 +26,7 @@
         <form action="check_existing" method="post">
         <div class="phone-sub-container">
             <label for="phone">*Enter your phone number:</label>
-            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' required minlength="10"/>
+            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' required minlength="10" oninput="this.value = phoneFormat(this.value)"/>
         </div>
         <input type="submit" id="submit"/>
         </form>

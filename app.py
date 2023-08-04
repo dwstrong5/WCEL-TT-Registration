@@ -40,6 +40,9 @@ entries = db.get_collection('entries')
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+def formatPhone(num):
+    return"({}) {}-{}".format(num[0:3], num[3:6], num[6:])
+    
 def generateNewEntry(data):
     new_entry = dict()
     new_entry["date"] = datetime.today().strftime('%b-%d-%Y')
@@ -98,8 +101,10 @@ def checkin():
 @app.route("/check_existing", methods=["GET","POST"])
 def check_existing():
     if request.method == "POST":
-        if entries.find_one({"phone": standardize(request.form["phone"])}):
-            return render_template("review.html", entry=entries.find_one({"phone": standardize(request.form["phone"])}))
+        currEntry = entries.find_one({"phone": standardize(request.form["phone"])})
+        if currEntry:
+            currEntry['phone'] = formatPhone(currEntry['phone'])
+            return render_template("review.html", entry=currEntry)
         else:
             return redirect("/")
     else:

@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block body %}
-
-
+<script src="../static/scripts/formatPhone.js"></script>
 
 <div class="logo-container">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
@@ -30,7 +29,7 @@
                 <label for="parent-name">*Your name:</label>
                 <input type="text" name="parent-name" id="parent-name" value="{{entry.get('parent-name')}}" required>
                 <label for="phone">*Phone number:</label>
-                <input type="tel" name="phone" id="phone" value="{{entry.get('phone')}}" required>
+                <input type="tel" name="phone" id="phone" value="{{entry.get('phone')}}" required oninput="this.value = phoneFormat(this.value)">
                 <label for="email">*Email address:</label>
                 <input type="email" name="email" id="email" value="{{entry.get('email')}}" required>
                 {% set count = namespace(value = 1) %}

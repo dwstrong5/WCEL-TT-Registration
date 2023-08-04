@@ -11,6 +11,7 @@
 
 {% endif %}
 
+<script src='../static/scripts/formatPhone.js'></script>
 <div class="content-container">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
     <div class="logo-container">
@@ -100,7 +101,7 @@
             <input type="email" id="email" name="email" placeholder='ex: John.Smith@gmail.com' />
     
             <label for="phone">Contact Number:</label>
-            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' minlength="10"/>
+            <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' minlength="10" oninput="this.value = phoneFormat(this.value)"/>
     
             <label for="languages">Do you speak any additional languages? If so, please select all that apply.</label>
                 <div class='language-options'>
