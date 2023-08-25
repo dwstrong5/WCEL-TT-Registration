@@ -19,7 +19,6 @@ getChildCount = () => {
 }
 
 count = getChildCount()
-console.log(count)
 addButton.addEventListener('click', (event) => {
 
     event.preventDefault();
@@ -32,7 +31,7 @@ addButton.addEventListener('click', (event) => {
     nameLabelContainer.classList.add('child-label-container')
 
     const nameLabel= document.createElement('label')
-    nameLabel.innerHTML = `*Child ${count}:`
+    nameLabel.innerHTML = `<span>* </span>Child ${count}:`
         
     const removeB = document.createElement('button')
     removeB.classList.add('btn', 'remove-button')
@@ -49,7 +48,7 @@ addButton.addEventListener('click', (event) => {
     nameInput.type = "text"
     nameInput.id = `child-name-${count}`
     nameInput.name = `child-name-${count}`
-    nameInput.placeholder = "Jane Smith"
+    nameInput.placeholder = "ex: Jane Smith"
     nameInput.setAttribute("required", "")
 
     childContainer.append(nameLabelContainer, nameInput)
@@ -86,7 +85,7 @@ function updateCounts() {
     for (let i = 0; i < children.length; i++) {
         id = String(children[i].id)
         if(id.includes('child-container')) {
-            children[i].children[0].children[0].innerHTML = `*Child ${tmpCount}:`
+            children[i].children[0].children[0].innerHTML = `<span>* </span>Child ${tmpCount}:`
             tmpCount += 1
         }
     }

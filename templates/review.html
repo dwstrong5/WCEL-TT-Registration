@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-<script src="../static/scripts/formatPhone.js"></script>
+<script src="../static/scripts/formatInput.js"></script>
 
 <div class="logo-container">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
@@ -23,21 +23,21 @@
         </a>
         <div class="review-container">
             <h1 class="section-title">Review:</h1>
-            <small>* indicates required fields.</small>
+            <small><span>* </span> indicates required fields.</small>
             <h4>Last check-in: {{entry.get('date')}}</h4>
             <form action="confirm-checkin" method="post">
-                <label for="parent-name">*Your name:</label>
+                <label for="parent-name"><span>* </span>Your name:</label>
                 <input type="text" name="parent-name" id="parent-name" value="{{entry.get('parent-name')}}" required>
-                <label for="phone">*Phone number:</label>
+                <label for="phone"><span>* </span>Phone number:</label>
                 <input type="tel" name="phone" id="phone" value="{{entry.get('phone')}}" required oninput="this.value = phoneFormat(this.value)">
-                <label for="email">*Email address:</label>
+                <label for="email"><span>* </span>Email address:</label>
                 <input type="email" name="email" id="email" value="{{entry.get('email')}}" required>
                 {% set count = namespace(value = 1) %}
                 {% for key in entry %}
                     {% if "child-name" in key %}
                     <div id="child-container">
                         <div class="child-label-container">
-                            <label for="child-name-{{count.value}}">*Child {{count.value}}:</label>
+                            <label for="child-name-{{count.value}}"><span>* </span>Child {{count.value}}:</label>
                             <button class="btn remove-button"><i class="fa fa-close"></i></button>
                         </div>
                         <input type="text" name="child-name-{{count.value}}" id="child-name-{{count.value}}" value="{{entry.get(key)}}" required>

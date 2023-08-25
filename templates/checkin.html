@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<script src="../static/scripts/formatPhone.js"></script>
+<script src="../static/scripts/formatInput.js"></script>
 <div class="content-container">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
     <div class="logo-container">
@@ -19,13 +19,13 @@
         <h1>Welcome to Toddler Time!</h1>
         <p>Please enter your phone number below.</p>
         <p>If this is your first time joining us, please complete your registration <a href="/">here.</a></p>
-        <small>* indicates required fields.</small>
+        <small><span>* </span> indicates required fields.</small>
     </div>
     
     <div class="phone-container">
         <form action="check_existing" method="post">
         <div class="phone-sub-container">
-            <label for="phone">*Enter your phone number:</label>
+            <label for="phone"><span>* </span>Enter your phone number:</label>
             <input type="tel" id="phone" name="phone" placeholder='ex: (123) 456-7890' required minlength="10" oninput="this.value = phoneFormat(this.value)"/>
         </div>
         <input type="submit" id="submit"/>

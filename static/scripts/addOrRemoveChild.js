@@ -8,34 +8,42 @@ function addChildEntry() {
     document.querySelector('.services-container').insertAdjacentElement('afterend',createChildEntry())
 }
 
+function dateFormat(input) {
+    input = input.replace(/\D/g,'');
+    var size = input.length;
+    if (size>2) {input=input.slice(0,2)+"-"+input.slice(2,8)}
+    if (size>4) {input=input.slice(0,5)+"-"+input.slice(5)}
+    return input;
+}
+
 function createChildEntry() {
     childCount += 1;
     const res = document.createElement('div')
     res.className="added-child-container"
     const nameLabel= document.createElement('label')
-    nameLabel.innerHTML = "Your child's full name:"
+    nameLabel.innerHTML = "<span>* </span>Your child's full name:"
         
     const nameInput = document.createElement('input')
     nameInput.type = "text"
     nameInput.placeholder = "ex: Jane Smith"
     nameInput.id = `child-name-${childCount}`
     nameInput.name = `child-name-${childCount}`
+    nameInput.required = true
 
     const ageLabel = document.createElement('label')
-    ageLabel.innerHTML = "How old is your child?"
+    ageLabel.innerHTML = "<span>* </span>Your child's date of birth:"
 
     const agePicker = document.createElement('input')
     agePicker.type = "text"
-    agePicker.placeholder="YYYY-MM-DD"
+    agePicker.placeholder="MM-DD-YYYY"
+    agePicker.pattern = "\d{2}-\d{2}-\d{4}"
     agePicker.id = `child-age-${childCount}`
     agePicker.name = `child-age-${childCount}`
+    agePicker.required = true
 
-    agePicker.onfocus = () => {
-        agePicker.type = "date"
-    }
-    agePicker.onblur = () => {
-        agePicker.type = "text"
-    };
+    agePicker.addEventListener('input', (e) => {
+        e.target.value = dateFormat(e.target.value)
+    });
 
     const servicesLabel = document.createElement('label')
     servicesLabel.innerHTML = "Are they receiving services at WCEL?"

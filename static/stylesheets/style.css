@@ -27,6 +27,10 @@ body {
     margin-top: auto;
 }
 
+span {
+    color: red;
+}
+
 .footer img {
     height:64px;
     width: auto;
