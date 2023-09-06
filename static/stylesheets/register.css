@@ -15,12 +15,42 @@ body {
 
 .logo-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
     flex: 1;
 }
 
+#login-button {
+    display: block;
+    white-space: nowrap;
+    border: thin solid white;
+    color: #fff;
+    border-radius: 8px;
+    background-color: rgb(0,174,239);
+    font-size: 14pt;
+    position:relative;
+    top: 1.5rem;
+    left: 35%;
+    margin: 0;
+    padding: 0;
+    height: 3rem;
+    width: 9rem;
+}
+
+#login-link, #login-link:visited {
+    text-decoration: none; 
+    display: block;
+    padding: 10px;
+    color: inherit;
+    flex: 1;
+}
+
+
+#login-button:hover {
+    background-color: rgb(0, 151, 239);
+    cursor: pointer;
+}
 
 .logo {
     width: 25vw;
@@ -210,7 +240,6 @@ input[type=submit]:hover {
     .greeting-container > p {
         font-size: 1rem;
     }
-
 }
 
 @media screen and (max-width: 961px) {
@@ -234,6 +263,12 @@ input[type=submit]:hover {
         left: 85%;
         height: 48px;
         width: auto;
+    }
+
+    #login-button {
+        font-size: 12pt;
+        width: 8rem;
+        height: 2rem;
     }
 }
 
@@ -266,6 +301,7 @@ input[type=submit]:hover {
         align-items: center;
     }
     h1 {
+        margin-top: 0;
         font-size: max(1.5rem,5vw);
     }
 
@@ -275,7 +311,9 @@ input[type=submit]:hover {
 
     input[type="button"], input[type="submit"] {
         width: 40%;
-        font-size: 100%;
+        
     }
+
+
 }
 
