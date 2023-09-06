@@ -1,0 +1,37 @@
+html body {
+    overflow:hidden;
+}
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width:100%;
+    padding: 1rem 
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.logo {
+    width: 25vw;
+    min-width: 256px;
+    height: auto;
+}
+
+.logo > img {
+    width: 100%;
+    height: auto;
+}
