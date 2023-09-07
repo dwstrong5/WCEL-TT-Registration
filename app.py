@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from datetime import datetime
 import pymongo, os, json, certifi, bcrypt
 from pymongo.server_api import ServerApi
@@ -143,6 +143,8 @@ def register():
 @app.route("/home", methods=["GET", "POST"])
 def home():
     if request.method == "GET":
+        if "email" in session:
+            return render_template("home.html", message={"user": session["email"]})
         return redirect("/login")
     
     if request.method == "POST":
@@ -161,9 +163,16 @@ def home():
             # If password is correct, log user in and return homepage
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
+                session["email"] = entry["email"]
                 return render_template("home.html", message={"user": username})
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    if "email" in session:
+        session.pop("email", None)
+        return render_template("login.html", message="Logged out successfully.")
 
 if __name__ == "__main__":
     app.run()

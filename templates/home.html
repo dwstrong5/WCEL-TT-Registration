@@ -2,10 +2,23 @@
 
 {% block header %}
 <title>WCEL | Home</title>
-<link rel="stylesheet" href="../static/stylesheets/bootstrap.css">
 {% endblock %}
 
 
 {% block body %}
-<h1>Hello, {{message.get("user") or "Unauthenticated User"}}</h1>
+
+<!--Navbar-->
+<nav class="navbar navbar-light" style="background-color: #1cbbb4;">
+    <a class="navbar-brand" href="https://wcel.net">
+        <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
+    </a>
+
+    <div class="navbar-nav d-flex flex-row">
+        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="#">Reports</a>
+        <a class="nav-link" href="logout">Logout</a>
+    </div>
+</nav>
+
+<h1 class="my-auto mx-auto">Hello, {{message.get("user") or "Unauthenticated User"}}</h1>
 {% endblock %}
