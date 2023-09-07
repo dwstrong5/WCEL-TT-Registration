@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime
-import pymongo, os, json, certifi
+import pymongo, os, json, certifi, bcrypt
 from pymongo.server_api import ServerApi
 
 app = Flask(__name__)
@@ -113,21 +113,57 @@ def check_existing():
     else:
         return redirect("/checkin")
                 
-@app.route("/login", methods=["GET"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    # If user navigates to /login, prompt them to login
     if request.method == "GET":
         return render_template("login.html")
+    
+    # User is being redirected to login after registering from an account
     else:
-        return redirect("/login")
+        username = request.form.get("email").strip()
+        password = request.form.get("password").strip()
+        confPassword = request.form.get("confirmPassword").strip()
+
+        if not username or not password or not confPassword:
+            return render_template("login.html", message="Invalid attempt. Please try again.")
+        elif (password != confPassword):
+            return render_template("login.html", message = "Passwords don't match. Please try again.")
+        elif (users.find_one(username)):
+            return render_template("login.html", message = "Account already exists. Please login.")
+        else:
+            hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            users.insert_one({"email": username, "password": hashed})
+            return render_template("login.html", message=f"User {username} created successfully. Please login.")
+    
+@app.route("/register", methods=["GET"])
+def register():
+    return render_template("registerUser.html")
                 
 @app.route("/home", methods=["GET", "POST"])
 def home():
     if request.method == "GET":
         return redirect("/login")
-    elif request.method == "POST":
-        username = request.form.get("email")
-        password = request.form.get("password")
-        
-        return render_template("home.html", message={"user": username})
+    
+    if request.method == "POST":
+        username = request.form.get("email").strip()
+        password = request.form.get("password").strip()
+
+        if not username or not password:
+            return render_template("login.html", message="Invalid attempt. Please try again.")
+
+        entry = users.find_one({"email": username})
+
+        if not entry:
+            return render_template("login.html", message = "No account found. Please register for an account before logging in.")
+
+        else:
+            # If password is correct, log user in and return homepage
+            # Else, return user to login page and display incorrect password 
+            if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
+                return render_template("home.html", message={"user": username})
+            else:
+                return render_template("login.html", message="Incorrect password. Please try again.")
+
 if __name__ == "__main__":
     app.run()
