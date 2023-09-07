@@ -168,6 +168,12 @@ def home():
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
 
+@app.route("/reports", methods=["GET"])
+def reports():
+    if "email" in session:
+        return render_template("reports.html")
+    return redirect("/login")
+
 @app.route("/logout", methods=["GET"])
 def logout():
     if "email" in session:
