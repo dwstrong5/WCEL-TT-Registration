@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block header %} 
-    <title> Sign In </title>
-    <link rel="stylesheet" href="/static/stylesheets/login.css">
+    <title> Register </title>
+    <link rel="stylesheet" href="/static/stylesheets/registerUser.css">
 {% endblock %}
 
 
@@ -16,15 +16,16 @@
 
 <div class="row my-auto w-100" >
     <div class="mx-auto col-8 col-md-6 col-lg-4">
-        <form action="home" method="POST" class="registration-form" id="signup">
+        <form action="login" method="POST" class="registration-form" id="signup">
             <label for="email" class="form-label">Email address:</label>
             <input type="email" class="form-control mb-2" name="email" id="email" placeholder="example@wcel.net" autofocus required>
             <label for="password" class="form-label">Password:</label>
             <input type="password" name="password" id="password" class="form-control mb-2" required>
+            <label for="confirmPassword" class="form-label">Confirm Password:</label>
+            <input type="password" name="confirmPassword" id="password" class="form-control mb-2" required>
             <button type="submit" class="btn btn-primary mt-2" style="width:100%; background-color:rgb(0,174,239);">Submit</button>
         </form>
-        <div class="sign-in-redirect mt-2">Need an account? Register <a href="/register" style="text-decoration: none; color:blue">here.</a></div>
-        <div class="sign-in-redirect mt-2">Forgot your password? <a href="/" style="text-decoration: none; color: blue">here.</a></div>
+        <div class="sign-in-redirect mt-2">Already have an account? Login <a href="/" style="text-decoration: none; color:blue">here.</a></div>
     </div>
 </div>
 
