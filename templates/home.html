@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<title>WCEL | Home</title>
+<link rel="stylesheet" href="../static/stylesheets/bootstrap.css">
+{% endblock %}
+
+
+{% block body %}
+<h1>Hello, {{message.get("user") or "Unauthenticated User"}}</h1>
+{% endblock %}

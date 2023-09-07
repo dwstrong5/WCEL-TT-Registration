@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime
 import pymongo, os, json, certifi
 from pymongo.server_api import ServerApi
@@ -36,7 +36,7 @@ except Exception as e:
 
 db = client['toddler-time-registration']
 entries = db.get_collection('entries')
-
+users = db.get_collection('users')
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -68,9 +68,12 @@ def getChildNames(entry):
 def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
     
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
-    return render_template("register.html", languages = languages)
+    if request.method == "GET":
+        return render_template("register.html", languages = languages)
+    else:
+        return redirect("/")
 
 @app.route("/confirm-registration", methods=["GET", "POST"])
 def confirmRegistration():
@@ -110,10 +113,21 @@ def check_existing():
     else:
         return redirect("/checkin")
                 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
+    else:
+        return redirect("/login")
                 
+@app.route("/home", methods=["GET", "POST"])
+def home():
+    if request.method == "GET":
+        return redirect("/login")
+    elif request.method == "POST":
+        username = request.form.get("email")
+        password = request.form.get("password")
+        
+        return render_template("home.html", message={"user": username})
 if __name__ == "__main__":
     app.run()
