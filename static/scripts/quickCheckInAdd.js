@@ -1,11 +1,14 @@
-const addButton = document.querySelector('.add-button')
-const remButton = document.querySelector('.fa-close')
+const addButton = document.querySelector('.add-button');
+const remButtonList = document.querySelectorAll('.fa-close');
+const remButtonArr = [...remButtonList];
 const submitButton = document.querySelector('.submit-button')
 const form = document.querySelector('form');
 console.log(submitButton)
-if (remButton) {
-    remButton.parentNode.addEventListener('click', (event) => {event.preventDefault()})
-}
+remButtonArr.forEach(i => {
+    console.log("clicked");
+    i.parentNode.addEventListener('click', (event) => {event.preventDefault()})
+    i.addEventListener("click", removeItem)
+});
 
 getChildCount = () => {
     let count = 0;
@@ -57,9 +60,6 @@ addButton.addEventListener('click', (event) => {
     updateCounts()
 })
 
-if (remButton) {
-    remButton.addEventListener('click', removeItem)
-}
 
 submitButton.addEventListener('click', (event) => {
     event.preventDefault();
