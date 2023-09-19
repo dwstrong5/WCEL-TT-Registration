@@ -101,8 +101,8 @@ def checkin():
 @app.route("/check_existing", methods=["GET","POST"])
 def check_existing():
     if request.method == "POST":
-        currEntries = entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1)
-        if currEntries:
+        currEntries = list(entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1))
+        if currEntries and len(currEntries) > 0:
             currEntry = currEntries[0]
             return render_template("review.html", entry=currEntry)
         else:
