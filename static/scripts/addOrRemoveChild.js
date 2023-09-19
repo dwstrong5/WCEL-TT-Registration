@@ -36,7 +36,7 @@ function createChildEntry() {
     const agePicker = document.createElement('input')
     agePicker.type = "text"
     agePicker.placeholder="MM-DD-YYYY"
-    agePicker.pattern = "\d{2}-\d{2}-\d{4}"
+    agePicker.pattern = "\\\d{2}-\\\d{2}-\\\d{4}"
     agePicker.id = `child-age-${childCount}`
     agePicker.name = `child-age-${childCount}`
     agePicker.required = true
