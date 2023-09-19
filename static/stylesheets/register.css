@@ -240,6 +240,9 @@ input[type=submit]:hover {
     .greeting-container > p {
         font-size: 1rem;
     }
+    #login-button {
+        font-size:10pt;
+    }
 }
 
 @media screen and (max-width: 961px) {
@@ -267,8 +270,9 @@ input[type=submit]:hover {
 
     #login-button {
         font-size: 12pt;
-        width: 8rem;
-        height: 2rem;
+        width: auto;
+        height: auto;
+        top: 1rem;
     }
 }
 
