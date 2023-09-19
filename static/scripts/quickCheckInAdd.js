@@ -4,8 +4,9 @@ const remButtonArr = [...remButtonList];
 const submitButton = document.querySelector('.submit-button')
 const form = document.querySelector('form');
 console.log(submitButton)
+
+// Add removeItem event listener to all remove buttons made according to the users most recent check-in
 remButtonArr.forEach(i => {
-    console.log("clicked");
     i.parentNode.addEventListener('click', (event) => {event.preventDefault()})
     i.addEventListener("click", removeItem)
 });
