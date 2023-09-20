@@ -21,8 +21,14 @@
     </div>
 </nav>
 
-<!--<h1 class="my-auto mx-auto">Hello, {{message.get("user") or "Unauthenticated User"}}</h1>-->
-<div class="container-fluid d-flex flex-column">
-    <h1>Home page</h1>
+
+<div class="d-flex flex-column my-auto col row col-md-10 row-md-10" style="border: thin solid black; border-radius: 12px; max-width: 70%;">
+    <ul>
+        {% for i in range(10) %}
+            <li>
+                {{data[i]}}
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
