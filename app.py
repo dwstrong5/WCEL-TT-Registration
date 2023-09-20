@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Language options for registration
 languages = ["Latin", 
              "Spanish", 
-             "Portugese", 
+             "Portuguese", 
              "German", 
              "Japanese", 
              "Korean", 
@@ -35,7 +35,8 @@ except Exception as e:
     print(e)
 
 db = client['toddler-time-registration']
-entries = db.get_collection('entries')
+#entries = db.get_collection('entries')
+entries = db.get_collection('test-entries')
 users = db.get_collection('users')
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -164,7 +165,8 @@ def home():
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
                 session["email"] = entry["email"]
-                return render_template("home.html", message={"user": username})
+                data=list(entries.find({}).sort("date", -1).limit(10))
+                return render_template("home.html", message={"user": username}, data=data)
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
 
