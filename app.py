@@ -116,26 +116,30 @@ def check_existing():
                 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # If user navigates to /login, prompt them to login
+    print(session)
     if request.method == "GET":
         return render_template("login.html")
-    
-    # User is being redirected to login after registering from an account
     else:
         username = request.form.get("email").strip()
         password = request.form.get("password").strip()
-        confPassword = request.form.get("confirmPassword").strip()
 
-        if not username or not password or not confPassword:
+        if not username or not password:
             return render_template("login.html", message="Invalid attempt. Please try again.")
-        elif (password != confPassword):
-            return render_template("login.html", message = "Passwords don't match. Please try again.")
-        elif (users.find_one(username)):
-            return render_template("login.html", message = "Account already exists. Please login.")
+
+        entry = users.find_one({"email": username})
+        print(entry)
+        if not entry:
+            return render_template("login.html", message="No account found. Please register for an account before logging in.")
+
         else:
-            hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            users.insert_one({"email": username, "password": hashed})
-            return render_template("login.html", message=f"User {username} created successfully. Please login.")
+            if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
+                session["email"] = entry["email"]
+                print("Just set session email to: " + session['email'])
+                data = list(entries.find({}).sort("date", -1).limit(10))
+                return render_template("home.html", message={"user": username}, data=data)
+            else:
+                return render_template("login.html", message="Incorrect password. Please try again.")
+
     
 @app.route("/register", methods=["GET"])
 def register():
@@ -143,11 +147,12 @@ def register():
                 
 @app.route("/home", methods=["GET", "POST"])
 def home():
-    if request.method == "GET":
-        if "email" in session:
-            return render_template("home.html", message={"user": session["email"]})
+    if "email" not in session:
         return redirect("/login")
     
+    username = session["email"]
+    data=list(entries.find({}).sort("date", -1).limit(10))
+
     if request.method == "POST":
         username = request.form.get("email").strip()
         password = request.form.get("password").strip()
@@ -165,10 +170,11 @@ def home():
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
                 session["email"] = entry["email"]
-                data=list(entries.find({}).sort("date", -1).limit(10))
                 return render_template("home.html", message={"user": username}, data=data)
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
+    # Handle GET request
+    return render_template("home.html", message={"user": username}, data=data)
 
 @app.route("/reports", methods=["GET"])
 def reports():

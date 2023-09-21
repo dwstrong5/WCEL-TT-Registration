@@ -9,26 +9,37 @@
 {% block body %}
 
 <!--Navbar-->
-<nav class="container-fluid navbar navbar-light p-2" style="background-color: #1cbbb4;">
-    <a class="navbar-brand" href="https://wcel.net">
-        <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
-    </a>
-
-    <div class="navbar-nav d-flex flex-row">
-        <a class="px-2 nav-link" href="home">Home</a>
-        <a class="px-2 nav-link" href="reports">Reports</a>
-        <a class="px-2 nav-link" href="logout">Logout</a>
-    </div>
-</nav>
-
-
-<div class="d-flex flex-column my-auto col row col-md-10 row-md-10" style="border: thin solid black; border-radius: 12px; max-width: 70%;">
-    <ul>
-        {% for i in range(10) %}
-            <li>
-                {{data[i]}}
-            </li>
-        {% endfor %}
-    </ul>
+<div class="w-100 d-flex justify-content-center"  style="background-color: #1cbbb4;">
+    <nav class="col col-lg-8 navbar navbar-light p-2"">
+        <a class="navbar-brand" href="https://wcel.net">
+            <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
+        </a>
+    
+        <div class="navbar-nav d-flex flex-row">
+            <a class="px-2 nav-link" href="home">Home</a>
+            <a class="px-2 nav-link" href="reports">Reports</a>
+            <a class="px-2 nav-link" href="logout">Logout</a>
+        </div>
+    </nav>
 </div>
+
+
+
+
+
+<div class="d-flex flex-column my-auto col col-md-10" style="border: thin solid black; border-radius: 12px; max-width: 70%; overflow: auto;">
+    {% for obj in data %}
+        <ul class="d-flex ">
+            {% for key, value in obj.items() %}
+                <li class="d-flex flex-column" style="margin-right: 2rem;text-wrap: nowrap;">
+                    {% if key != "_id" %}
+                    <strong>{{ key }}:</strong> {{ value }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <hr> <!-- Add a horizontal line after each object -->
+    {% endfor %}
+</div>
+
 {% endblock %}
