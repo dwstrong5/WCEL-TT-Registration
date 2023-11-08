@@ -45,7 +45,7 @@ def formatPhone(num):
     
 def generateNewEntry(data):
     new_entry = dict()
-    new_entry["date"] = datetime.today().strftime('%b-%d-%Y')
+    new_entry["date"] = datetime.today().strftime('%m/%d/%Y')
     for item in list(data.lists()):
         curr_item = list(item)
         if curr_item[0] == 'phone' and curr_item[1]:
