@@ -10,5 +10,5 @@ Jinja2==3.1.2
 jsonify==0.5
 MarkupSafe==2.1.2
 pymongo==4.3.3
-Werkzeug==2.3.4
+Werkzeug==3.0.1
 zipp==3.15.0
