@@ -69,6 +69,30 @@ def getChildNames(entry):
 
 def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
+
+def getPreviewData():
+    cursor = list(entries.find({}).sort("date", 1).limit(15))
+    data = []
+    # Pick out only the data we want to preview
+    for item in cursor:
+        contents = {
+            "Date": item["date"],
+            "Guardian Name": item["parent-name"],
+            "Child 1": item["child-name-1"]
+        }
+        if "child-name-2" in item:
+            contents["Child 2"] = item["child-name-2"]
+        else: 
+            contents["Child 2"] = ""
+        if "child-name-3" in item:
+            contents["Child 3"] = item["child-name-3"]
+        else:
+            contents["Child 3"] = ""
+        data.append(contents)
+         
+    return pd.DataFrame(data)    
+    
+    
     
 @app.route("/", methods=["GET"])
 def index():
@@ -115,30 +139,11 @@ def check_existing():
     else:
         return redirect("/checkin")
                 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET"])
 def login():
-    print(session)
     if request.method == "GET":
         return render_template("login.html")
-    else:
-        username = request.form.get("email").strip()
-        password = request.form.get("password").strip()
 
-        if not username or not password:
-            return render_template("login.html", message="Invalid attempt. Please try again.")
-
-        entry = users.find_one({"email": username})
-        print(entry)
-        if not entry:
-            return render_template("login.html", message="No account found. Please register for an account before logging in.")
-
-        else:
-            if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
-                session["email"] = entry["email"]
-                data = list(entries.find({}).sort("date", -1).limit(10))
-                return render_template("home.html", message={"user": username}, data=data)
-            else:
-                return render_template("login.html", message="Incorrect password. Please try again.")
 
     
 @app.route("/register", methods=["GET"])
@@ -148,14 +153,17 @@ def register():
 @app.route("/home", methods=["GET", "POST"])
 def home():
 
-    # If user is not logged in, redirect to login screen
-    if "email" not in session:
-        return redirect("/login")
+    if request.method == "GET":
+        
+        # If user is not logged in, redirect to login screen
+        if "email" not in session:
+            return redirect("/login")
+        else:
+            # User is logged in, fetch data from DB
+            username = session["email"]
+            data = getPreviewData()
+
     
-    # User is logged in, fetch data from DB
-    username = session["email"]
-    data=list(entries.find({}).sort("date", -1).limit(10))
-    print(data)
     # Check if login submission is valid
     if request.method == "POST":
         username = request.form.get("email").strip()
@@ -176,13 +184,15 @@ def home():
             # If password is correct, log user in and return homepage
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
+                print(entry["email"])
                 session["email"] = entry["email"]
-                return render_template("home.html", message={"user": username}, data=data)
+                data = getPreviewData()
+                return render_template("home.html", data=data)
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
             
     # User is logged in and stored in session, render homepage
-    return render_template("home.html", message={"user": username}, data=data)
+    return render_template("home.html", data=data)
 
 @app.route("/reports", methods=["GET"])
 def reports():

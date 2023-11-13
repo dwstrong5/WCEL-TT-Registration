@@ -10,7 +10,7 @@
 
 <!--Navbar-->
 <div class="w-100 d-flex justify-content-center"  style="background-color: #1cbbb4;">
-    <nav class="col col-lg-8 navbar navbar-light p-2"">
+    <nav class="col col-lg-8 navbar navbar-light p-2">
         <a class="navbar-brand" href="https://wcel.net">
             <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
         </a>
@@ -23,24 +23,35 @@
     </nav>
 </div>
 
+<div id="content-container" class="container-fluid col col-md-9 d-flex flex-column my-auto border border-2 rounded p-4">
+    <h1 class="display-3 pb-1 pt-1 pb-md-4 pt-md-0" style="text-align: left">Recent Check-ins:</h1>
+    <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
 
-
-
-
-<div class="d-flex flex-column my-auto col col-md-10" style="border: thin solid black; border-radius: 12px; max-width: 70%; overflow: auto;">
-
-    {% for obj in data %}
-        <ul class="d-flex ">
-            {% for key, value in obj.items() %}
-                <li class="d-flex flex-column" style="margin-right: 2rem;text-wrap: nowrap;">
+        <!-- Header row -->
+        <ul class="data-row header-row">
+            {% for key in data.columns %}
+                <li class="header-cell">
                     {% if key != "_id" %}
-                    <strong>{{ key }}:</strong> {{ value }}
+                    <strong>{{ key }}</strong>
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
-        <hr> <!-- Add a horizontal line after each object -->
-    {% endfor %}
+        
+        <!-- Data rows -->
+        {% for index, row in data.iterrows() %}
+            <ul class="data-row">
+                {% for key in data.columns %}
+                    {% if key != "_id" %}
+                        <li class="data-cell">
+                            {{ row[key] }}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endfor %}
+        
+    </div>
 </div>
 
 {% endblock %}
