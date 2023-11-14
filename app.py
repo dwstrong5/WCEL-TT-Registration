@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, send_file
 from datetime import datetime
 import pymongo, os, json, certifi, bcrypt
 from pymongo.server_api import ServerApi
 import pandas as pd 
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -143,8 +144,40 @@ def check_existing():
 def login():
     if request.method == "GET":
         return render_template("login.html")
+    
+    
+@app.route("/download", methods=['POST'])
+def download():
+    # Check if the user is logged in. Return a 401 error if not
+    if "email" not in session:
+        return jsonify({'status': 401, 'message': 'Unauthorized. User is not authenticated.'}), 401
 
+    data = list(entries.find().sort("date", -1))
 
+    # Check if any data is available
+    if not data:
+        return jsonify({'status': 404, 'message': 'No data available.'}), 404
+
+    # Create a DataFrame from the MongoDB data
+    result = pd.DataFrame(data)
+
+    # Create a BytesIO object to store the Excel file
+    excel_file = BytesIO()
+
+    # Write the DataFrame to the BytesIO object as an Excel file
+    result.to_excel(excel_file, index=False, engine='openpyxl')
+
+    # Move the file cursor to the beginning of the BytesIO object
+    excel_file.seek(0)
+
+    # Return the Excel file as an attachment
+    return send_file(
+        excel_file,
+        as_attachment=True,
+        download_name="output.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+   
     
 @app.route("/register", methods=["GET"])
 def register():
@@ -152,7 +185,6 @@ def register():
                 
 @app.route("/home", methods=["GET", "POST"])
 def home():
-
     if request.method == "GET":
         
         # If user is not logged in, redirect to login screen
@@ -199,6 +231,8 @@ def logout():
     if "email" in session:
         session.pop("email", None)
         return render_template("login.html", message="Logged out successfully.")
+    else:
+        return render_template("login.html", message="No user currently signed in.")
 
 if __name__ == "__main__":
     app.run()

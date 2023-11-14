@@ -4,3 +4,5 @@ config.txt
 venv/
 .azure
 node_modules
+*.xlsx
+*.csv
