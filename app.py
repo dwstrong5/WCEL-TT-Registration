@@ -194,12 +194,6 @@ def home():
     # User is logged in and stored in session, render homepage
     return render_template("home.html", data=data)
 
-@app.route("/reports", methods=["GET"])
-def reports():
-    if "email" in session:
-        return render_template("reports.html")
-    return redirect("/login")
-
 @app.route("/logout", methods=["GET"])
 def logout():
     if "email" in session:
