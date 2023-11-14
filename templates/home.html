@@ -9,12 +9,12 @@
 {% block body %}
 
 <!--Navbar-->
-<div class="w-100 d-flex justify-content-center"  style="background-color: #1cbbb4;">
+<div class="w-100 d-flex justify-content-center" style="background-color: #1cbbb4;">
     <nav class="col col-lg-8 navbar navbar-light p-2">
         <a class="navbar-brand" href="https://wcel.net">
             <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
         </a>
-    
+
         <div class="navbar-nav d-flex flex-row">
             <a class="px-2 nav-link" href="home">Home</a>
             <a class="px-2 nav-link" href="reports">Reports</a>
@@ -23,34 +23,38 @@
     </nav>
 </div>
 
-<div id="content-container" class="container-fluid col col-md-9 d-flex flex-column my-auto border border-2 rounded p-4">
-    <h1 class="display-3 pb-1 pt-1 pb-md-4 pt-md-0" style="text-align: left">Recent Check-ins:</h1>
-    <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
-
-        <!-- Header row -->
-        <ul class="data-row header-row">
-            {% for key in data.columns %}
-                <li class="header-cell">
-                    {% if key != "_id" %}
+<h1 class="display-5 pb-1 pt-1 pb-md-4 pt-md-4" style="min-width: 100%;">Recent Check-ins:</h1>
+<div id="content-viewer" class="d-flex flex-column my-auto col">
+    <!-- Header row -->
+    <ul class="data-row header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
+        <li class="header-cell" style="min-width: 24px;">
+            <input type="checkbox">
+        </li>
+        {% for key in data.columns %}
+            <li class="header-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                {% if key != "_id" %}
                     <strong>{{ key }}</strong>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div id="data-viewer">
         <!-- Data rows -->
         {% for index, row in data.iterrows() %}
-            <ul class="data-row">
-                {% for key in data.columns %}
-                    {% if key != "_id" %}
-                        <li class="data-cell">
-                            {{ row[key] }}
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endfor %}
-        
+        <ul class="data-row">
+            <li class="data-cell" style="min-width: 24px;">
+                <input type="checkbox">
+            </li>
+            {% for key in data.columns %}
+                {% if key != "_id" %}
+                    <li class="data-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                        {{ row[key] }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
     </div>
 </div>
 

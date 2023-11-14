@@ -71,7 +71,7 @@ def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
 
 def getPreviewData():
-    cursor = list(entries.find({}).sort("date", 1).limit(15))
+    cursor = list(entries.find({}).sort("date", 1).limit(100))
     data = []
     # Pick out only the data we want to preview
     for item in cursor:

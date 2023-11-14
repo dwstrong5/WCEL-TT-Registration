@@ -11,9 +11,20 @@ body {
     margin: 0;
 }
 
+#content-viewer {
+    max-height: 85vh;
+    overflow: auto;
+    width: 100%;
+}
+
+#data-viewer {
+    background-color: #ffffff;
+}
+
 .data-row {
     display: flex;
     list-style: none;
+    min-width:100%
 }
 
 .header-cell,
@@ -25,6 +36,6 @@ body {
 }
 
 .header-row {
-    border-bottom: 1px solid #000; 
-    width: 100%;
+    min-width: 100%;
+    border-bottom: solid 2px rgb(231, 231, 231);
 }
