@@ -17,13 +17,18 @@
 
         <div class="navbar-nav d-flex flex-row">
             <a class="px-2 nav-link" href="home">Home</a>
-            <a class="px-2 nav-link" href="reports">Reports</a>
+            <a class="px-2 nav-link" href="/">Register</a>
             <a class="px-2 nav-link" href="logout">Logout</a>
         </div>
     </nav>
 </div>
 
-<h1 class="display-5 pb-1 pt-1 pb-md-4 pt-md-4" style="min-width: 100%;">Recent Check-ins:</h1>
+
+<div id="banner-container" class="d-flex justify-content-between align-items-end m" style="min-width: 100%;">
+    <h1 class="display-5 ms-1 ms-md-4">Recent Check-ins:</h1>
+    <button id="rpt-btn" class="btn btn-link me-1 me-md-4">Generate Report</button>
+</div>
+
 <div id="content-viewer" class="d-flex flex-column my-auto col">
     <!-- Header row -->
     <ul class="data-row header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
@@ -56,6 +61,12 @@
         </ul>
     {% endfor %}
     </div>
+</div>
+
+<div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
+    <button id="add-btn" class="btn btn-primary m-1 disabled">Add Record</button>
+    <button id="edit-btn"  class="btn btn-warning m-1 disabled">Edit Record</button>
+    <button id="del-btn"  class="btn btn-danger m-1 disabled">Delete Record</button>
 </div>
 
 {% endblock %}

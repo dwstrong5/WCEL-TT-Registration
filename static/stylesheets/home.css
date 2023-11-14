@@ -12,9 +12,10 @@ body {
 }
 
 #content-viewer {
-    max-height: 85vh;
+    max-height: 75vh;
     overflow: auto;
     width: 100%;
+    box-shadow: 5px 10px 8px gainsboro;
 }
 
 #data-viewer {
@@ -37,5 +38,17 @@ body {
 
 .header-row {
     min-width: 100%;
+    border-top: solid 2px rgb(231, 231, 231);
     border-bottom: solid 2px rgb(231, 231, 231);
 }
+
+
+
+@media only screen and (max-width: 768px) {
+    .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.2rem;
+    }
+}
+
