@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, send_file
 from datetime import datetime
 import pymongo, os, json, certifi, bcrypt
 from pymongo.server_api import ServerApi
 import pandas as pd 
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -69,6 +70,30 @@ def getChildNames(entry):
 
 def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
+
+def getPreviewData():
+    cursor = list(entries.find({}).sort("date", 1).limit(100))
+    data = []
+    # Pick out only the data we want to preview
+    for item in cursor:
+        contents = {
+            "Date": item["date"],
+            "Guardian Name": item["parent-name"],
+            "Child 1": item["child-name-1"]
+        }
+        if "child-name-2" in item:
+            contents["Child 2"] = item["child-name-2"]
+        else: 
+            contents["Child 2"] = ""
+        if "child-name-3" in item:
+            contents["Child 3"] = item["child-name-3"]
+        else:
+            contents["Child 3"] = ""
+        data.append(contents)
+         
+    return pd.DataFrame(data)    
+    
+    
     
 @app.route("/", methods=["GET"])
 def index():
@@ -106,8 +131,8 @@ def checkin():
 @app.route("/check_existing", methods=["GET","POST"])
 def check_existing():
     if request.method == "POST":
-        currEntries = entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1)
-        if currEntries:
+        currEntries = list(entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1))
+        if currEntries and len(currEntries) > 0:
             currEntry = currEntries[0]
             return render_template("review.html", entry=currEntry)
         else:
@@ -115,31 +140,44 @@ def check_existing():
     else:
         return redirect("/checkin")
                 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET"])
 def login():
-    print(session)
     if request.method == "GET":
         return render_template("login.html")
-    else:
-        username = request.form.get("email").strip()
-        password = request.form.get("password").strip()
+    
+    
+@app.route("/download", methods=['POST'])
+def download():
+    # Check if the user is logged in. Return a 401 error if not
+    if "email" not in session:
+        return jsonify({'status': 401, 'message': 'Unauthorized. User is not authenticated.'}), 401
 
-        if not username or not password:
-            return render_template("login.html", message="Invalid attempt. Please try again.")
+    data = list(entries.find().sort("date", -1))
 
-        entry = users.find_one({"email": username})
-        print(entry)
-        if not entry:
-            return render_template("login.html", message="No account found. Please register for an account before logging in.")
+    # Check if any data is available
+    if not data:
+        return jsonify({'status': 404, 'message': 'No data available.'}), 404
 
-        else:
-            if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
-                session["email"] = entry["email"]
-                data = list(entries.find({}).sort("date", -1).limit(10))
-                return render_template("home.html", message={"user": username}, data=data)
-            else:
-                return render_template("login.html", message="Incorrect password. Please try again.")
+    # Create a DataFrame from the MongoDB data
+    result = pd.DataFrame(data)
 
+    # Create a BytesIO object to store the Excel file
+    excel_file = BytesIO()
+
+    # Write the DataFrame to the BytesIO object as an Excel file
+    result.to_excel(excel_file, index=False, engine='openpyxl')
+
+    # Move the file cursor to the beginning of the BytesIO object
+    excel_file.seek(0)
+
+    # Return the Excel file as an attachment
+    return send_file(
+        excel_file,
+        as_attachment=True,
+        download_name="output.xlsx",
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+   
     
 @app.route("/register", methods=["GET"])
 def register():
@@ -147,15 +185,17 @@ def register():
                 
 @app.route("/home", methods=["GET", "POST"])
 def home():
+    if request.method == "GET":
+        
+        # If user is not logged in, redirect to login screen
+        if "email" not in session:
+            return redirect("/login")
+        else:
+            # User is logged in, fetch data from DB
+            username = session["email"]
+            data = getPreviewData()
 
-    # If user is not logged in, redirect to login screen
-    if "email" not in session:
-        return redirect("/login")
     
-    # User is logged in, fetch data from DB
-    username = session["email"]
-    data=list(entries.find({}).sort("date", -1).limit(10))
-    print(data)
     # Check if login submission is valid
     if request.method == "POST":
         username = request.form.get("email").strip()
@@ -176,25 +216,23 @@ def home():
             # If password is correct, log user in and return homepage
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
+                print(entry["email"])
                 session["email"] = entry["email"]
-                return render_template("home.html", message={"user": username}, data=data)
+                data = getPreviewData()
+                return render_template("home.html", data=data)
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
             
     # User is logged in and stored in session, render homepage
-    return render_template("home.html", message={"user": username}, data=data)
-
-@app.route("/reports", methods=["GET"])
-def reports():
-    if "email" in session:
-        return render_template("reports.html")
-    return redirect("/login")
+    return render_template("home.html", data=data)
 
 @app.route("/logout", methods=["GET"])
 def logout():
     if "email" in session:
         session.pop("email", None)
         return render_template("login.html", message="Logged out successfully.")
+    else:
+        return render_template("login.html", message="No user currently signed in.")
 
 if __name__ == "__main__":
     app.run()

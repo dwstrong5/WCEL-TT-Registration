@@ -3,44 +3,116 @@
 {% block header %}
 <title>WCEL | Home</title>
 <link rel="stylesheet" href="../static/stylesheets/home.css">
+<script src="../static/scripts/reportPopup.js" defer></script>
 {% endblock %}
-
 
 {% block body %}
 
 <!--Navbar-->
-<div class="w-100 d-flex justify-content-center"  style="background-color: #1cbbb4;">
-    <nav class="col col-lg-8 navbar navbar-light p-2"">
+<div class="w-100 d-flex justify-content-center" style="background-color: #1cbbb4;">
+    <nav class="col col-lg-8 navbar navbar-light p-2">
         <a class="navbar-brand" href="https://wcel.net">
             <img src="../static/images/All White WCEL Small Icon Logo 2021.png" style="height: 64px; width: auto;" alt="">
         </a>
-    
+
         <div class="navbar-nav d-flex flex-row">
             <a class="px-2 nav-link" href="home">Home</a>
-            <a class="px-2 nav-link" href="reports">Reports</a>
+            <a class="px-2 nav-link" href="/">Register</a>
             <a class="px-2 nav-link" href="logout">Logout</a>
         </div>
     </nav>
 </div>
 
 
+<div id="banner-container" class="d-flex justify-content-between align-items-end m" style="min-width: 100%;">
+    <h1 class="display-5 ms-1 ms-md-4">Recent Check-ins:</h1>
+    <button id="open-form-btn" class="btn btn-link me-1 me-md-4">Generate Report</button>
+</div>
+
+<!--Popup Form-->
+<div id="popupForm" class="popup-form col-10 col-md-3">
+    <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Report Timeline:</h3>
+    <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
+
+        <form action="download" method="post" class="d-flex flex-column">
+
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="1">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">1 Month</label>
+            </div>
+    
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="2">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">2 Months</label>
+            </div>
+    
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="3">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">3 Months</label>
+            </div>
+    
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="6">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">6 Months</label>
+            </div>
+            
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="12">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">1 Year</label>
+            </div>
+    
+            <div class="option-wrapper d-flex justify-content-start align-items-center">
+                <input type="radio" id="reportTimeFrame" name="reportTimeFrame" value="0">
+                <label for="reportTimeFrame" style="padding-left:0.2rem">All time</label>
+            </div>
+    
+            <input type="submit" value="Submit" class="btn btn-primary mt-2">
+        </form>
+        
+    </div>
+</div>
 
 
 
-<div class="d-flex flex-column my-auto col col-md-10" style="border: thin solid black; border-radius: 12px; max-width: 70%; overflow: auto;">
 
-    {% for obj in data %}
-        <ul class="d-flex ">
-            {% for key, value in obj.items() %}
-                <li class="d-flex flex-column" style="margin-right: 2rem;text-wrap: nowrap;">
-                    {% if key != "_id" %}
-                    <strong>{{ key }}:</strong> {{ value }}
-                    {% endif %}
-                </li>
+<div id="content-viewer" class="d-flex flex-column my-auto col">
+    <!-- Header row -->
+    <ul class="data-row header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
+        <li class="header-cell" style="min-width: 24px;">
+            <input type="checkbox">
+        </li>
+        {% for key in data.columns %}
+            <li class="header-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                {% if key != "_id" %}
+                    <strong>{{ key }}</strong>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div id="data-viewer">
+        <!-- Data rows -->
+        {% for index, row in data.iterrows() %}
+        <ul class="data-row">
+            <li class="data-cell" style="min-width: 24px;">
+                <input type="checkbox">
+            </li>
+            {% for key in data.columns %}
+                {% if key != "_id" %}
+                    <li class="data-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                        {{ row[key] }}
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
-        <hr> <!-- Add a horizontal line after each object -->
     {% endfor %}
+    </div>
+</div>
+
+<div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
+    <button id="add-btn" class="btn btn-primary m-1 disabled">Add Record</button>
+    <button id="edit-btn"  class="btn btn-warning m-1 disabled">Edit Record</button>
+    <button id="del-btn"  class="btn btn-danger m-1 disabled">Delete Record</button>
 </div>
 
 {% endblock %}
