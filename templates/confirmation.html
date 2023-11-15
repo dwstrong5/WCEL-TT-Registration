@@ -9,17 +9,19 @@
 
 <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
 
-<div class="confirmation-container">
-    <h1>Welcome to Toddler Time!</h1>
-    <h2>Registration has been confirmed for:</h2>
-    <ul>
-        {% for item in entry %}
-            <li>{{item}}</li>
-        {% endfor %}
-    </ul>
+<div class="content-container container container-fluid col d-flex flex-column justify-content-center align-items-center">
+    <div class="confirmation-container d-flex flex-column justify-content-center align-items-center">
+        <h1>Welcome to Toddler Time!</h1>
+        <h2 style="text-align: center;">Registration has been confirmed for:</h2>
+        <ul>
+            {% for item in entry %}
+                <li>{{item}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <a href="/">
+        <button class="return-button">Return</button>
+    </a>
 </div>
-<a href="/">
-    <button class="return-button">Return</button>
-</a>
 
 {% endblock %}

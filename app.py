@@ -48,17 +48,18 @@ def formatPhone(num):
     
 def generateNewEntry(data):
     new_entry = dict()
+
     new_entry["date"] = datetime.today().strftime('%m/%d/%Y')
+
     for item in list(data.lists()):
         curr_item = list(item)
         if curr_item[0] == 'phone' and curr_item[1]:
             curr_item[1][0] = standardize(curr_item[1][0])
         entry = ""
         for sub_item in curr_item[1]:
-            if(sub_item != ''):
+            if sub_item != '':
                 entry = entry + str(sub_item) + ";"
-            new_entry[curr_item[0]] = entry[:-1]
-    print(new_entry)
+        new_entry[curr_item[0]] = entry[:-1]
     return new_entry
     
 def getChildNames(entry):
@@ -72,7 +73,7 @@ def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
 
 def getPreviewData():
-    cursor = list(entries.find({}).sort("date", 1).limit(100))
+    cursor = list(entries.find({}).sort("date", -1).limit(100))
     data = []
     # Pick out only the data we want to preview
     for item in cursor:
@@ -145,7 +146,31 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     
+@app.route("/add-record", methods=['POST'])
+def addRecord():
+    # Check if the user is logged in. Return a 401 error if not
+    if "email" not in session:
+        return jsonify({'status': 401, 'message': 'Unauthorized. User is not authenticated.'}), 401
     
+    # Get the date from the form data
+    selected_date = request.form.get("date")
+
+    # Convert the date format
+    try:
+        formatted_date = datetime.strptime(selected_date, "%Y-%m-%d").strftime("%m/%d/%Y")
+    except ValueError:
+        # Handle the case where the date format is incorrect
+        return jsonify({'status': 400, 'message': 'Invalid date format.'}), 400
+    newEntry = generateNewEntry(request.form)
+    newEntry["date"] = formatted_date
+    id = entries.insert_one(newEntry)
+    if(id):
+        return render_template("home.html", data=getPreviewData())
+    else:
+        return jsonify({'status': 400, 'message': 'Error inserting new entry into database.'}), 400
+
+    
+
 @app.route("/download", methods=['POST'])
 def download():
     # Check if the user is logged in. Return a 401 error if not
@@ -216,7 +241,6 @@ def home():
             # If password is correct, log user in and return homepage
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
-                print(entry["email"])
                 session["email"] = entry["email"]
                 data = getPreviewData()
                 return render_template("home.html", data=data)

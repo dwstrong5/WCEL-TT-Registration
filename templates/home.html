@@ -3,7 +3,7 @@
 {% block header %}
 <title>WCEL | Home</title>
 <link rel="stylesheet" href="../static/stylesheets/home.css">
-<script src="../static/scripts/reportPopup.js" defer></script>
+<script src="../static/scripts/popups.js" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -26,11 +26,11 @@
 
 <div id="banner-container" class="d-flex justify-content-between align-items-end m" style="min-width: 100%;">
     <h1 class="display-5 ms-1 ms-md-4">Recent Check-ins:</h1>
-    <button id="open-form-btn" class="btn btn-link me-1 me-md-4">Generate Report</button>
+    <button id="reportButton" class="open-form-btn btn btn-link me-1 me-md-4">Generate Report</button>
 </div>
 
-<!--Popup Form-->
-<div id="popupForm" class="popup-form col-10 col-md-3">
+<!--Report popup Form-->
+<div id="reportPopupForm" class="popup-form col-10 col-md-3">
     <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Report Timeline:</h3>
     <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
 
@@ -74,6 +74,44 @@
 
 
 
+<!-- Add record popup form -->
+<div id="addRecordPopupForm" class="popup-form col-10 col-md-3">
+    <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Add Record:</h3>
+    <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
+
+        <form action="add-record" method="post" class="d-flex flex-column">
+
+            <div class="form-floating mb-1">
+                <input type="date" class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" required>
+                <label for="date">Date</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input type="input" class="form-control" id="parent-name" name="parent-name" placeholder="Parent/Guardian Name" required>
+                <label for="parent-name">Guardian's Name</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input type="input" class="form-control" id="child-name-1" name="child-name-1" placeholder="Child Name" required>
+                <label for="child-name-1">First Child's Name</label>
+            </div>
+    
+            <div class="form-floating mb-1">
+                <input type="input" class="form-control" id="child-name-2" name="child-name-2" placeholder="Child Name">
+                <label for="child-name-2">Second Child's Name</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input type="input" class="form-control" id="child-name-3" name="child-name-3" placeholder="Child Name">
+                <label for="child-name-3">Third Child's Name</label>
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-primary mt-2">
+        </form>
+    </div>
+</div>
+
+
 
 <div id="content-viewer" class="d-flex flex-column my-auto col">
     <!-- Header row -->
@@ -110,7 +148,7 @@
 </div>
 
 <div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
-    <button id="add-btn" class="btn btn-primary m-1 disabled">Add Record</button>
+    <button id="add-btn" class="open-form-btn btn btn-primary m-1">Add Record</button>
     <button id="edit-btn"  class="btn btn-warning m-1 disabled">Edit Record</button>
     <button id="del-btn"  class="btn btn-danger m-1 disabled">Delete Record</button>
 </div>
