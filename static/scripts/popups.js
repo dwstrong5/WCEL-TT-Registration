@@ -3,13 +3,25 @@
 const buttons = document.querySelectorAll(".open-form-btn");
 const popups = document.querySelectorAll(".popup-form");
 
+function closePopUps() {
+    popups.forEach(i => {
+        i.style.display = 'none';
+    });
+}
+
 buttons.forEach(i => {
     i.addEventListener('click', (event) => {
         if(event.target.id === "reportButton") {
+            closePopUps();
             document.getElementById("reportPopupForm").style.display = 'block';
         }
         else if (event.target.id === "add-btn") {
+            closePopUps();
             document.getElementById("addRecordPopupForm").style.display = 'block';
+        }
+        else if (event.target.id === "del-btn") {
+            closePopUps();
+            document.getElementById("deleteRecordPopupForm").style.display = 'block';
         }
     });
 });
@@ -19,10 +31,16 @@ buttons.forEach(i => {
 document.addEventListener('click', function (event) {
 
     if (!event.target.closest('.popup-form') && !event.target.closest('.open-form-btn')) {
-        popups.forEach(i => {
-            i.style.display = 'none';
-        });
+        closePopUps()
     }
+});
+
+// Event listeners for the Remove Confirmation popup
+const confirmDelete = document.querySelector('#confirm-delete-button');
+const rejectDelete = document.querySelector('#reject-delete-button');
+
+rejectDelete.addEventListener('click', (e) => {
+    rejectDelete.parentElement.parentElement.style.display = 'none';
 });
 
 

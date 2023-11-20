@@ -37,9 +37,11 @@ body {
 }
 
 .header-row {
+    display: flex;
     min-width: 100%;
     border-top: solid 2px rgb(231, 231, 231);
     border-bottom: solid 2px rgb(231, 231, 231);
+    list-style: none;
 }
 
 .popup-form {
@@ -56,6 +58,11 @@ body {
     z-index: 1;
 }
 
+#warning-icon {
+    height: 28px;
+    width: auto;
+    margin-right: 0.2rem;
+}
 
 @media only screen and (max-width: 768px) {
     .btn {

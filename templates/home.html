@@ -4,6 +4,7 @@
 <title>WCEL | Home</title>
 <link rel="stylesheet" href="../static/stylesheets/home.css">
 <script src="../static/scripts/popups.js" defer></script>
+<script src="../static/scripts/parseDataRow.js" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -75,7 +76,7 @@
 
 
 <!-- Add record popup form -->
-<div id="addRecordPopupForm" class="popup-form col-10 col-md-3">
+<div id="addRecordPopupForm" class="popup-form col-10 col-md-4">
     <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Add Record:</h3>
     <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
 
@@ -111,13 +112,25 @@
     </div>
 </div>
 
+<!-- Delete Record Form -->
+<div id="deleteRecordPopupForm" class="popup-form col-10 col-md-5">
+    <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left; display: inline-block;">
+        <img id="warning-icon" src="../static/images/warning-sign.svg" alt="" srcset="" style="vertical-align: middle;">
+        <span style="vertical-align: middle; color: black;">Are you sure you want to delete the selected record(s)?</span>
+    </h3>
+    
+    <div class="d-flex mt-2 col">
+        <button class="btn btn-success flex-fill" style="margin-right:0.25rem" id="confirm-delete-button">Yes</button>
+        <button class="btn btn-danger flex-fill" style="margin-left:0.25rem" id="reject-delete-button">No</button>
+    </div>
+</div>
 
 
 <div id="content-viewer" class="d-flex flex-column my-auto col">
     <!-- Header row -->
-    <ul class="data-row header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
+    <ul class="header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
         <li class="header-cell" style="min-width: 24px;">
-            <input type="checkbox">
+            <input class="header-checkbox" type="checkbox" id="header-checkbox" name="header-checkbox">
         </li>
         {% for key in data.columns %}
             <li class="header-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
@@ -133,7 +146,7 @@
         {% for index, row in data.iterrows() %}
         <ul class="data-row">
             <li class="data-cell" style="min-width: 24px;">
-                <input type="checkbox">
+                <input class="data-checkbox" type="checkbox" id="data-checkbox" name="data-checkbox">
             </li>
             {% for key in data.columns %}
                 {% if key != "_id" %}
@@ -150,7 +163,7 @@
 <div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
     <button id="add-btn" class="open-form-btn btn btn-primary m-1">Add Record</button>
     <button id="edit-btn"  class="btn btn-warning m-1 disabled">Edit Record</button>
-    <button id="del-btn"  class="btn btn-danger m-1 disabled">Delete Record</button>
+    <button id="del-btn"  class="open-form-btn btn btn-danger m-1">Delete Record</button>
 </div>
 
 {% endblock %}
