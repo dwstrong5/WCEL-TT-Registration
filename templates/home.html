@@ -3,8 +3,7 @@
 {% block header %}
 <title>WCEL | Home</title>
 <link rel="stylesheet" href="../static/stylesheets/home.css">
-<script src="../static/scripts/popups.js" defer></script>
-<script src="../static/scripts/parseDataRow.js" defer></script>
+<script src="../static/scripts/homePageControls.js" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -162,7 +161,8 @@
 
 <div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
     <button id="add-btn" class="open-form-btn btn btn-primary m-1">Add Record</button>
-    <button id="edit-btn"  class="btn btn-warning m-1 disabled">Edit Record</button>
+    <button id="view-btn" class="open-form-btn btn btn-success m-1 disabled">View Record</button>
+    <button id="edit-btn" class="open-form-btn btn btn-warning m-1 disabled">Edit Record</button>
     <button id="del-btn"  class="open-form-btn btn btn-danger m-1">Delete Record</button>
 </div>
 
