@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block body %}
+
+{% set results =  %}
+
 <!--Navbar-->
 <div class="w-100 d-flex justify-content-center" style="background-color: #1cbbb4;">
     <nav class="col col-lg-8 navbar navbar-light p-2">
@@ -125,22 +128,51 @@
 
 
 <div id="content-viewer" class="d-flex flex-column my-auto col">
+
+    <!-- Translate mongoDB headers to display headers -->
+    {% set headers = ({
+        '_id': "ID",
+        'date': "Date",
+        'parent-name': 'Guardian Name',
+        'relationship': "Relationship",
+        'email': 'Email',
+        'phone': 'Phone',
+        'languages': 'Languages',
+        'reference': 'Reference',
+        'consultation-photo-permission': 'Consultation Photo Permission',
+        'outreach-photo-permission': 'Media Photo Permission',
+        'child-name-1': 'Child 1',
+        'child-name-2': "Child 2",
+        'child-name-3': 'Child 3',
+        'child-name-4': 'Child 4',
+        'child-name-5': 'Child 5',
+        'child-age-1': 'Child 1 DOB',
+        'child-age-2': 'Child 2 DOB',
+        'child-age-3': 'Child 3 DOB',
+        'child-age-4': 'Child 4 DOB',
+        'child-age-5': 'Child 5 DOB',
+        'receiving-services-1': 'Receiving Services?',
+        'receiving-services-2': 'Receiving Services?',
+        'receiving-services-3': 'Receiving Services?',
+        'receiving-services-4': 'Receiving Services?',
+        'receiving-services-5': 'Receiving Services?',
+    }) %}
+
     <!-- Header row -->
     <ul class="header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
         <li class="header-cell" style="min-width: 24px;">
             <input class="header-checkbox" type="checkbox" id="header-checkbox" name="header-checkbox">
         </li>
         {% for key in data.columns %}
-            <li class="header-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
-                {% if key != "_id" %}
-                    <strong>{{ key }}</strong>
-                {% endif %}
+            {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
+            <li class="header-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
+                    <strong>{{ headers[key] }}</strong>
             </li>
+            {% endif %}
         {% endfor %}
     </ul>
 
     <div id="data-viewer">
-        {% set ids = [] %}
         <!-- Data rows -->
         {% for index, row in data.iterrows() %}
         <ul class="data-row">
@@ -148,12 +180,10 @@
                 <input class="data-checkbox" type="checkbox" id="data-checkbox" name="data-checkbox">
             </li>
             {% for key in data.columns %}
-                {% if key != "_id" %}
-                    <li class="data-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
+                    <li class="data-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
                         {{ row[key] }}
                     </li>
-                {% else %}
-                {% set _ = ids.append(row[key]) %}
                 {% endif %}
             {% endfor %}
         </ul>

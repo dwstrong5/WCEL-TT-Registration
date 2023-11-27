@@ -27,7 +27,7 @@ languages = ["Latin",
 with open('config.txt') as f:
     credentials = json.load(f)
 
-uri = "mongodb+srv://" + credentials["username"] + ":" + credentials["password"] + "@wcel-cluster.wtcxphf.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb+srv://" + os.environ.get("MONGO_USERNAME") + ":" + os.environ.get("MONGO_PASS") + "@wcel-cluster.wtcxphf.mongodb.net/?retryWrites=true&w=majority"
 client = pymongo.MongoClient(uri, tlsCAFile=certifi.where())
 # Send a ping to confirm a successful connection
 try:
@@ -88,27 +88,28 @@ def standardize(num):
 # Function that fetches most recent submitted records from mongoDB and returns them as a 
 # Pandas DataFrame to be displayed on "home" page after logging in
 def getPreviewData():
-    cursor = list(entries.find({}).sort("date", -1).limit(100))
-    data = []
+    return pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100)))
+    
     # Pick out only the data we want to preview
-    for item in cursor:
-        contents = {
-            "_id": item["_id"],
-            "Date": item["date"],
-            "Guardian Name": item["parent-name"],
-            "Child 1": item["child-name-1"]
-        }
-        if "child-name-2" in item:
-            contents["Child 2"] = item["child-name-2"]
-        else: 
-            contents["Child 2"] = ""
-        if "child-name-3" in item:
-            contents["Child 3"] = item["child-name-3"]
-        else:
-            contents["Child 3"] = ""
-        data.append(contents)
+    #data = []
+    # for item in cursor:
+    #     contents = {
+    #         "_id": item["_id"],
+    #         "Date": item["date"],
+    #         "Guardian Name": item["parent-name"],
+    #         "Child 1": item["child-name-1"]
+    #     }
+    #     if "child-name-2" in item:
+    #         contents["Child 2"] = item["child-name-2"]
+    #     else: 
+    #         contents["Child 2"] = ""
+    #     if "child-name-3" in item:
+    #         contents["Child 3"] = item["child-name-3"]
+    #     else:
+    #         contents["Child 3"] = ""
+    #     data.append(contents)
          
-    return pd.DataFrame(data)    
+    # return pd.DataFrame(data)    
     
     
     
@@ -185,7 +186,9 @@ def addRecord():
     else:
         return jsonify({'status': 400, 'message': 'Error inserting new entry into database.'}), 400
 
-    
+@app.route("/delete-record", methods=["POST"])
+def deleteRecord():
+    return render_template("home.html", data=getPreviewData())
 
 @app.route("/download", methods=['POST'])
 def download():
