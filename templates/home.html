@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-
 <!--Navbar-->
 <div class="w-100 d-flex justify-content-center" style="background-color: #1cbbb4;">
     <nav class="col col-lg-8 navbar navbar-light p-2">
@@ -141,6 +140,7 @@
     </ul>
 
     <div id="data-viewer">
+        {% set ids = [] %}
         <!-- Data rows -->
         {% for index, row in data.iterrows() %}
         <ul class="data-row">
@@ -152,6 +152,8 @@
                     <li class="data-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
                         {{ row[key] }}
                     </li>
+                {% else %}
+                {% set _ = ids.append(row[key]) %}
                 {% endif %}
             {% endfor %}
         </ul>
@@ -163,7 +165,7 @@
     <button id="add-btn" class="open-form-btn btn btn-primary m-1">Add Record</button>
     <button id="view-btn" class="open-form-btn btn btn-success m-1 disabled">View Record</button>
     <button id="edit-btn" class="open-form-btn btn btn-warning m-1 disabled">Edit Record</button>
-    <button id="del-btn"  class="open-form-btn btn btn-danger m-1">Delete Record</button>
+    <button id="del-btn"  class="open-form-btn btn btn-danger m-1 disabled">Delete Record</button>
 </div>
 
 {% endblock %}

@@ -4,12 +4,20 @@ const buttons = document.querySelectorAll(".open-form-btn");
 const popups = document.querySelectorAll(".popup-form");
 const editButton = document.getElementById("edit-btn")
 const viewButton = document.getElementById("view-btn")
+const delButton = document.getElementById("del-btn")
 
 var totalChecked = 0;
 
 // Disable view and edit buttons if totalChecked is zero or greater than
 // one to prevent user from trying to view/edit multiple records simultaneously
 function checkButtons() {
+    console.log(`Checked: ${totalChecked}, Unchecked: ${100 - totalChecked}`);
+
+    // Enable 'Delete Record(s) button if at least 1 is checked. Disabled by default.
+    totalChecked > 0 ? delButton.classList.remove("disabled") : delButton.classList.add("disabled")
+
+    // Enable View and Edit Record buttons if and only if one record is checked.
+    // Disabled by default.
     if (totalChecked === 0 || totalChecked > 1) {
         viewButton.classList.add("disabled");
         editButton.classList.add("disabled");
@@ -20,7 +28,7 @@ function checkButtons() {
 }
 
 
-// Function that closes all popups
+// Function that closes all popups.
 function closePopUps() {
     popups.forEach(i => {
         i.style.display = 'none';
@@ -40,6 +48,7 @@ headerCheckbox.addEventListener('change', (e) => {
             totalChecked = 0;
         });
     }
+    checkButtons();
 })
 
 
@@ -52,10 +61,10 @@ checkboxes.forEach(i => {
             totalChecked--;
         }
         checkButtons();
-        console.log(`Checked: ${totalChecked}, Unchecked: ${100 - totalChecked}`);
     });
 });
 
+// Add event listeners to trigger popups when their corresponding button is clicked.
 buttons.forEach(i => {
     i.addEventListener('click', (event) => {
         if(event.target.id === "reportButton") {

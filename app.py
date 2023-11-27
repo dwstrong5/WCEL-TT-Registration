@@ -43,25 +43,37 @@ users = db.get_collection('users')
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+# Format phone number to (XXX) XXX-XXXX 
 def formatPhone(num):
     return"({}) {}-{}".format(num[0:3], num[3:6], num[6:])
     
+# Function that takes in form data and returns a dictionary with data formatted to
+# keys used in mongoDB    
 def generateNewEntry(data):
-    new_entry = dict()
 
+    # Create date stamp for new record entry
+    new_entry = dict()
     new_entry["date"] = datetime.today().strftime('%m/%d/%Y')
 
+    # For each item in form data
     for item in list(data.lists()):
         curr_item = list(item)
+
+        # If user provided phone number, format to desired format
         if curr_item[0] == 'phone' and curr_item[1]:
             curr_item[1][0] = standardize(curr_item[1][0])
+
+        # If multiple options submitted for languages, create a semi-colon delimited list of 
+        # each selected language
         entry = ""
         for sub_item in curr_item[1]:
             if sub_item != '':
                 entry = entry + str(sub_item) + ";"
         new_entry[curr_item[0]] = entry[:-1]
+
     return new_entry
-    
+
+
 def getChildNames(entry):
     res=[]
     for key in entry:
@@ -69,15 +81,19 @@ def getChildNames(entry):
             res.append(entry.get(key))
     return res
 
+# Remove any (, ), ' ', or '-' from phone number form data
 def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
 
+# Function that fetches most recent submitted records from mongoDB and returns them as a 
+# Pandas DataFrame to be displayed on "home" page after logging in
 def getPreviewData():
     cursor = list(entries.find({}).sort("date", -1).limit(100))
     data = []
     # Pick out only the data we want to preview
     for item in cursor:
         contents = {
+            "_id": item["_id"],
             "Date": item["date"],
             "Guardian Name": item["parent-name"],
             "Child 1": item["child-name-1"]
