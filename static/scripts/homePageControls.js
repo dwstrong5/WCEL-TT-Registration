@@ -2,9 +2,10 @@ const headerCheckbox = document.querySelector('#header-checkbox');
 const checkboxes = document.querySelectorAll("#data-checkbox");
 const buttons = document.querySelectorAll(".open-form-btn");
 const popups = document.querySelectorAll(".popup-form");
-const editButton = document.getElementById("edit-btn")
-const viewButton = document.getElementById("view-btn")
-const delButton = document.getElementById("del-btn")
+const editButton = document.getElementById("edit-btn");
+const viewButton = document.getElementById("view-btn");
+const delButton = document.getElementById("del-btn");
+const checked = new Set();
 
 var totalChecked = 0;
 
@@ -57,8 +58,12 @@ checkboxes.forEach(i => {
     i.addEventListener('change', (e) => {
         if (e.target.checked) {
             totalChecked++;
+            console.log(`Adding ${e.target.parentElement.parentElement.dataset.recordId}`);
+            checked.add(e.target.parentElement.parentElement.dataset.recordId);
         } else {
             totalChecked--;
+            console.log(`Removing ${e.target.parentElement.parentElement.dataset.recordId}`);
+            checked.delete(e.target.parentElement.parentElement.dataset.recordId);
         }
         checkButtons();
     });
@@ -91,11 +96,32 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Event listeners for the Remove Confirmation popup
-const confirmDelete = document.querySelector('#confirm-delete-button');
-const rejectDelete = document.querySelector('#reject-delete-button');
+// Confirm deletion of selected records.
+document.querySelector('#confirm-delete-button').addEventListener('click', (e) => {
+    $.ajax({
+        type: "POST",
+        url: "/delete-record",
+        data: JSON.stringify([...checked]),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(response) {
+            // Check the response from the server
+            if (response.status === 200) {
+                // Redirect to the home page after successful deletion
+                window.location.href = "/home";
+            } else {
+                // Handle other cases, e.g., display an error message
+                console.error(response.message);
+            }
+        },
+        error: function(error) {
+            console.error(error); // Log any errors for debugging
+        }
+    });
+});
 
-rejectDelete.addEventListener('click', () => {
-    rejectDelete.parentElement.parentElement.style.display = 'none';
+// Reject confirmation to delete selected records. If clicked, close the "Delete Record" popup.
+document.querySelector('#reject-delete-button').addEventListener('click', (e) => {
+    e.target.parentElement.parentElement.style.display = 'none';
 });
 

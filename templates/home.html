@@ -180,7 +180,7 @@
             {% for key in data.columns %}
                 {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
                     <li class="data-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
-                        {{ row[key] }}
+                        {{ '' if row[key] == 'NaN' or row[key] is none else row[key] }}
                     </li>
                 {% endif %}
             {% endfor %}

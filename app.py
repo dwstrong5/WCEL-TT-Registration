@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session, send_file
 from datetime import datetime
 import pymongo, os, json, certifi, bcrypt
-from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 import pandas as pd 
 from io import BytesIO
 
@@ -85,33 +85,6 @@ def getChildNames(entry):
 def standardize(num):
     return num.replace("(", "").replace(")","").replace("-","").replace(" ","")
 
-# Function that fetches most recent submitted records from mongoDB and returns them as a 
-# Pandas DataFrame to be displayed on "home" page after logging in
-def getPreviewData():
-    return pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100)))
-    
-    # Pick out only the data we want to preview
-    #data = []
-    # for item in cursor:
-    #     contents = {
-    #         "_id": item["_id"],
-    #         "Date": item["date"],
-    #         "Guardian Name": item["parent-name"],
-    #         "Child 1": item["child-name-1"]
-    #     }
-    #     if "child-name-2" in item:
-    #         contents["Child 2"] = item["child-name-2"]
-    #     else: 
-    #         contents["Child 2"] = ""
-    #     if "child-name-3" in item:
-    #         contents["Child 3"] = item["child-name-3"]
-    #     else:
-    #         contents["Child 3"] = ""
-    #     data.append(contents)
-         
-    # return pd.DataFrame(data)    
-    
-    
     
 @app.route("/", methods=["GET"])
 def index():
@@ -182,13 +155,20 @@ def addRecord():
     newEntry["date"] = formatted_date
     id = entries.insert_one(newEntry)
     if(id):
-        return render_template("home.html", data=getPreviewData())
+        return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
     else:
         return jsonify({'status': 400, 'message': 'Error inserting new entry into database.'}), 400
 
 @app.route("/delete-record", methods=["POST"])
 def deleteRecord():
-    return render_template("home.html", data=getPreviewData())
+    if len(request.get_json()) <= 0:
+        return jsonify({'status': 400, 'message': 'Error deleting entry from database.'}), 400
+    elif len(request.get_json()) == 1:
+        entries.delete_one({"_id": ObjectId(request.get_json()[0])})
+        return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
+    else:
+        return jsonify({'status': 400, 'message': 'Invalid request.'}), 400
+
 
 @app.route("/download", methods=['POST'])
 def download():
@@ -237,9 +217,7 @@ def home():
         else:
             # User is logged in, fetch data from DB
             username = session["email"]
-            data = getPreviewData()
 
-    
     # Check if login submission is valid
     if request.method == "POST":
         username = request.form.get("email").strip()
@@ -261,13 +239,12 @@ def home():
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
                 session["email"] = entry["email"]
-                data = getPreviewData()
-                return render_template("home.html", data=data)
+                return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
             
     # User is logged in and stored in session, render homepage
-    return render_template("home.html", data=data)
+    return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
 
 @app.route("/logout", methods=["GET"])
 def logout():
