@@ -8,8 +8,6 @@
 
 {% block body %}
 
-{% set results =  %}
-
 <!--Navbar-->
 <div class="w-100 d-flex justify-content-center" style="background-color: #1cbbb4;">
     <nav class="col col-lg-8 navbar navbar-light p-2">
@@ -163,19 +161,19 @@
         <li class="header-cell" style="min-width: 24px;">
             <input class="header-checkbox" type="checkbox" id="header-checkbox" name="header-checkbox">
         </li>
-        {% for key in data.columns %}
-            {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
-            <li class="header-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
-                    <strong>{{ headers[key] }}</strong>
-            </li>
-            {% endif %}
+            {% for key in data.columns %}
+                {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
+                    <li class="header-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
+                        <strong>{{ headers[key] }}</strong>
+                    </li>
+                {% endif %}
         {% endfor %}
     </ul>
 
     <div id="data-viewer">
         <!-- Data rows -->
         {% for index, row in data.iterrows() %}
-        <ul class="data-row">
+        <ul class="data-row" data-record-id="{{ row['_id'] }}">
             <li class="data-cell" style="min-width: 24px;">
                 <input class="data-checkbox" type="checkbox" id="data-checkbox" name="data-checkbox">
             </li>
@@ -187,7 +185,7 @@
                 {% endif %}
             {% endfor %}
         </ul>
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>
 
