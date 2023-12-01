@@ -83,6 +83,12 @@ buttons.forEach(i => {
         else if (event.target.id === "del-btn") {
             closePopUps();
             document.getElementById("deleteRecordPopupForm").style.display = 'block';
+        } else if (event.target.id === "view-btn") {
+            closePopUps();
+            document.getElementById("viewRecordPopupForm").style.display = 'block';
+        } else if (event.target.id === "edit-btn") {
+            closePopUps();
+            document.getElementById("editRecordPopupForm").style.display = 'block';
         }
     });
 });
