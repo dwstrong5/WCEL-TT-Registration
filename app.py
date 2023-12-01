@@ -140,7 +140,7 @@ def login():
 def addRecord():
     # Check if the user is logged in. Return a 401 error if not
     if "email" not in session:
-        return jsonify({'status': 401, 'message': 'Unauthorized. User is not authenticated.'}), 401
+        return render_template("home.html", {'status': 401, 'message': 'Unauthorized. User is not authenticated.'})
     
     # Get the date from the form data
     selected_date = request.form.get("date")
@@ -161,13 +161,15 @@ def addRecord():
 
 @app.route("/delete-record", methods=["POST"])
 def deleteRecord():
-    if len(request.get_json()) <= 0:
+    string_ids = request.get_json()
+    if len(string_ids) <= 0:
         return jsonify({'status': 400, 'message': 'Error deleting entry from database.'}), 400
-    elif len(request.get_json()) == 1:
+    elif len(string_ids) == 1:
         entries.delete_one({"_id": ObjectId(request.get_json()[0])})
-        return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
     else:
-        return jsonify({'status': 400, 'message': 'Invalid request.'}), 400
+        object_ids = [ObjectId(str_id) for str_id in string_ids]
+        entries.delete_many({"_id": { "$in": object_ids }})
+    return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
 
 
 @app.route("/download", methods=['POST'])
