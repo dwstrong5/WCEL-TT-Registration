@@ -131,3 +131,6 @@ document.querySelector('#reject-delete-button').addEventListener('click', (e) =>
     e.target.parentElement.parentElement.style.display = 'none';
 });
 
+viewButton.addEventListener('click', (e) => {
+    console.log(data)
+});

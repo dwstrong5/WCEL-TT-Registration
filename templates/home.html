@@ -79,7 +79,7 @@
     <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Add Record:</h3>
     <div class="d-flex flex-column my-auto col" style="max-width: 100%; overflow: auto;">
 
-        <form action="add-record" method="post" class="d-flex flex-column">
+        <form action="add-record" method="post" class="d-flex flex-column overflow-scroll">
 
             <div class="form-floating mb-1">
                 <input type="date" class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" required>
@@ -92,18 +92,45 @@
             </div>
 
             <div class="form-floating mb-1">
+                <select class="form-select" id="relationship" name="relationship">
+                    <option value="Parent">Parent</option>
+                    <option value="Grandparent">Grandparent</option>
+                    <option value="Guardian">Legal Guardian</option>
+                    <option value="Nanny">Nanny</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="relationship">Relationship</label>
+            </div>
+
+            <div class="form-floating mb-1">
                 <input type="input" class="form-control" id="child-name-1" name="child-name-1" placeholder="Child Name" required>
                 <label for="child-name-1">First Child's Name</label>
             </div>
     
             <div class="form-floating mb-1">
-                <input type="input" class="form-control" id="child-name-2" name="child-name-2" placeholder="Child Name">
+                <input type="input" class="form-control" id="child-name-2" name="child-name-2" placeholder="Child Name" >
                 <label for="child-name-2">Second Child's Name</label>
             </div>
 
             <div class="form-floating mb-1">
-                <input type="input" class="form-control" id="child-name-3" name="child-name-3" placeholder="Child Name">
+                <input type="input" class="form-control" id="child-name-3" name="child-name-3" placeholder="Child Name" >
                 <label for="child-name-3">Third Child's Name</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <select class="form-select" id="consultation-photo-permission" name="consultation-photo-permission" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <label for="relationship">Consultation Photo Permission?</label>
+            </div>
+
+            <div class="form-floating mb-1">
+                <select class="form-select" id="outreach-photo-permission" name="outreach-photo-permission" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <label for="relationship">Outreach Photo Permission?</label>
             </div>
 
             <input type="submit" value="Submit" class="btn btn-primary mt-2">
@@ -139,44 +166,15 @@
 
 <div id="content-viewer" class="d-flex flex-column my-auto col">
 
-    <!-- Translate mongoDB headers to display headers -->
-    {% set headers = ({
-        '_id': "ID",
-        'date': "Date",
-        'parent-name': 'Guardian Name',
-        'relationship': "Relationship",
-        'email': 'Email',
-        'phone': 'Phone',
-        'languages': 'Languages',
-        'reference': 'Reference',
-        'consultation-photo-permission': 'Consultation Photo Permission',
-        'outreach-photo-permission': 'Media Photo Permission',
-        'child-name-1': 'Child 1',
-        'child-name-2': "Child 2",
-        'child-name-3': 'Child 3',
-        'child-name-4': 'Child 4',
-        'child-name-5': 'Child 5',
-        'child-age-1': 'Child 1 DOB',
-        'child-age-2': 'Child 2 DOB',
-        'child-age-3': 'Child 3 DOB',
-        'child-age-4': 'Child 4 DOB',
-        'child-age-5': 'Child 5 DOB',
-        'receiving-services-1': 'Receiving Services?',
-        'receiving-services-2': 'Receiving Services?',
-        'receiving-services-3': 'Receiving Services?',
-        'receiving-services-4': 'Receiving Services?',
-        'receiving-services-5': 'Receiving Services?',
-    }) %}
-
     <!-- Header row -->
     <ul class="header-row d-flex align-items-center m-0 mb-1 pt-2 pb-2" style="background-color: rgb(242,242,242); color: rgb(117,129,140)">
         <li class="header-cell" style="min-width: 24px;">
             <input class="header-checkbox" type="checkbox" id="header-checkbox" name="header-checkbox">
         </li>
             {% for key in data.columns %}
-                {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
-                    <li class="header-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
-                        <strong>{{ headers[key] }}</strong>
+                {% if key != 'ID' %}
+                    <li class="header-cell" style="min-width: {{ '90px' if key=='Date' else '180px'}};">
+                        <strong>{{ key }}</strong>
                     </li>
                 {% endif %}
         {% endfor %}
@@ -185,14 +183,14 @@
     <div id="data-viewer">
         <!-- Data rows -->
         {% for index, row in data.iterrows() %}
-        <ul class="data-row" data-record-id="{{ row['_id'] }}">
+        <ul class="data-row" data-record-id="{{ row['ID'] }}">
             <li class="data-cell" style="min-width: 24px;">
                 <input class="data-checkbox" type="checkbox" id="data-checkbox" name="data-checkbox">
             </li>
             {% for key in data.columns %}
-                {% if key == 'date' or key == 'parent-name' or 'child-name' in key %}
-                    <li class="data-cell" style="min-width: {{ '90px' if key=='date' else '180px'}};">
-                        {{ '' if row[key] == 'NaN' or row[key] is none else row[key] }}
+                {% if key != "ID" %}
+                    <li class="data-cell" style="min-width: {{'90px' if key == 'Date' else ('230px' if 'Photo' in key else '180px')}};">
+                        {{ row[key] }}
                     </li>
                 {% endif %}
             {% endfor %}

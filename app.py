@@ -22,6 +22,46 @@ languages = ["Latin",
              "Arabic",
              "Italian"
              ]
+headers = {
+        '_id': "ID",
+        'date': "Date",
+        'parent-name': 'Guardian Name',
+        'relationship': "Relationship",
+        'email': 'Email',
+        'phone': 'Phone',
+        'languages': 'Languages',
+        'reference': 'Reference',
+        'consultation-photo-permission': 'Consultation Photo Permission',
+        'outreach-photo-permission': 'Media Photo Permission',
+        'child-name-1': 'Child 1',
+        'child-name-2': "Child 2",
+        'child-name-3': 'Child 3',
+        'child-name-4': 'Child 4',
+        'child-name-5': 'Child 5',
+        'child-age-1': 'Child 1 DOB',
+        'child-age-2': 'Child 2 DOB',
+        'child-age-3': 'Child 3 DOB',
+        'child-age-4': 'Child 4 DOB',
+        'child-age-5': 'Child 5 DOB',
+        'receiving-services-1': 'Receiving Services?',
+        'receiving-services-2': 'Receiving Services?',
+        'receiving-services-3': 'Receiving Services?',
+        'receiving-services-4': 'Receiving Services?',
+        'receiving-services-5': 'Receiving Services?',
+}
+
+def generatePreviewData(numRecords):
+    records = entries.find({}).sort("date", -1).limit(10)
+    
+    res = pd.DataFrame(columns= ["ID", "Date", "Guardian Name", "Relationship", "Consultation Photo Permission", "Media Photo Permission"])
+    for entry in records:
+        new_row = {}
+        for key in entry.keys():
+            if headers.get(key) in res.columns:
+                new_row[headers.get(key)] = entry[key]
+        res.loc[len(res)] = new_row
+    print(res.head(10))
+    return res.fillna('')
 
 # Establish connection with database
 with open('config.txt') as f:
@@ -155,7 +195,7 @@ def addRecord():
     newEntry["date"] = formatted_date
     id = entries.insert_one(newEntry)
     if(id):
-        return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
+        return render_template("home.html", data=generatePreviewData(numRecords=10))
     else:
         return jsonify({'status': 400, 'message': 'Error inserting new entry into database.'}), 400
 
@@ -241,12 +281,12 @@ def home():
             # Else, return user to login page and display incorrect password 
             if bcrypt.checkpw(password.encode('utf-8'), entry['password']):
                 session["email"] = entry["email"]
-                return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
+                return render_template("home.html", data=generatePreviewData(numRecords=10))
             else:
                 return render_template("login.html", message="Incorrect password. Please try again.")
             
     # User is logged in and stored in session, render homepage
-    return render_template("home.html", data=pd.DataFrame(list(entries.find({}).sort("date", -1).limit(100))).fillna(''))
+    return render_template("home.html", data=generatePreviewData(numRecords=10))
 
 @app.route("/logout", methods=["GET"])
 def logout():
