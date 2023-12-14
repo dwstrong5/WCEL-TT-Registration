@@ -85,7 +85,34 @@ buttons.forEach(i => {
             document.getElementById("deleteRecordPopupForm").style.display = 'block';
         } else if (event.target.id === "view-btn") {
             closePopUps();
-            document.getElementById("viewRecordPopupForm").style.display = 'block';
+            if (checked.size === 1) {
+                $.ajax({
+                    type: "POST",
+                    url: "/view-record",
+                    data: JSON.stringify([...checked]),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(response) {
+                        // Check the response from the server
+                        if (response.status === 200) {
+                            for (var prop in response.record) {
+                                console.log(prop)
+                                if (response.record[prop] && document.getElementById(prop+"-info")) {
+                                    document.getElementById(prop+"-info").defaultValue = response.record[prop]
+                                }
+                            }
+                        } else {
+                            // Handle other cases, e.g., display an error message
+                            console.error(response.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.error(error); // Log any errors for debugging
+                    }
+                });
+                document.getElementById("viewRecordPopupForm").style.display = 'block';
+            }
+            
         } else if (event.target.id === "edit-btn") {
             closePopUps();
             document.getElementById("editRecordPopupForm").style.display = 'block';
@@ -129,8 +156,4 @@ document.querySelector('#confirm-delete-button').addEventListener('click', (e) =
 // Reject confirmation to delete selected records. If clicked, close the "Delete Record" popup.
 document.querySelector('#reject-delete-button').addEventListener('click', (e) => {
     e.target.parentElement.parentElement.style.display = 'none';
-});
-
-viewButton.addEventListener('click', (e) => {
-    console.log(data)
 });

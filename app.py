@@ -51,7 +51,7 @@ headers = {
 }
 
 def generatePreviewData(numRecords):
-    records = entries.find({}).sort("date", -1).limit(10)
+    records = entries.find({}).sort("date", -1).limit(numRecords)
     
     res = pd.DataFrame(columns= ["ID", "Date", "Guardian Name", "Relationship", "Consultation Photo Permission", "Media Photo Permission"])
     for entry in records:
@@ -60,7 +60,6 @@ def generatePreviewData(numRecords):
             if headers.get(key) in res.columns:
                 new_row[headers.get(key)] = entry[key]
         res.loc[len(res)] = new_row
-    print(res.head(10))
     return res.fillna('')
 
 # Establish connection with database
@@ -210,6 +209,20 @@ def deleteRecord():
         object_ids = [ObjectId(str_id) for str_id in string_ids]
         entries.delete_many({"_id": { "$in": object_ids }})
     return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
+
+@app.route("/view-record", methods=["POST"])
+def viewRecord():
+    req = request.get_json()
+    if len(req) != 1:
+        return jsonify({'status': 400, 'message': 'Error fetching ID.'}), 400
+    else:
+        target_id = req[0]
+        entry = entries.find_one({"_id": ObjectId(target_id)})
+        if (entry):
+            entry['_id'] = str(entry['_id'])
+            return jsonify({'status': 200, 'record': entry, 'message': 'Record retrieved successfully'}), 200
+        else:
+            return jsonify({'status': 400, 'message': 'Error fetching requested ID.'}), 400
 
 
 @app.route("/download", methods=['POST'])
