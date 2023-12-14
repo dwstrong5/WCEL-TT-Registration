@@ -229,7 +229,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-2">
             <div class="col mb-1">
                 <strong><label for="floatingInput">Language(s):</label></strong>
                 <input type="text" class="form-control-plaintext" id="consultation-photo-permission-info" id="languages-info" readonly>
@@ -239,6 +239,14 @@
                 <input type="text" class="form-control-plaintext" id="outreach-photo-permission-info" id="reference-info" readonly>
             </div>
         </div>
+
+        <div id="edit-btn-container"class="justify-content-center w-100">
+            <button id="edit-btn" class="btn btn-warning m-1">Edit Record</button>
+        </div>
+        <div id="changes-btn-container" class="justify-content-center w-100">
+            <button id="cancel-changes-btn"  class="btn btn-danger m-1">Cancel</button>
+            <button id="submit-changes-btn" class="btn btn-success m-1">Save</button>
+        </div>
     </form>
 
     </div>
@@ -246,13 +254,6 @@
 
 
 </div>
-
-
-<!-- Edit Record Popup-->
-<div id="editRecordPopupForm" class="popup-form col col-md-10">
-    <h3 class="pb-1 pt-1 pt-md-0" style="text-align: left">Edit Record:</h3>
-</div>
-
 
 <!-- Delete Record Form -->
 <div id="deleteRecordPopupForm" class="popup-form col-10 col-md-5">
@@ -305,8 +306,7 @@
 
 <div id="buttons-container" class="container container-fluid d-flex align-items-center justify-content-center my-2 my-md-5">
     <button id="add-btn" class="open-form-btn btn btn-primary m-1">Add Record</button>
-    <button id="view-btn" class="open-form-btn btn btn-success m-1 disabled">View Record</button>
-    <button id="edit-btn" class="open-form-btn btn btn-warning m-1 disabled">Edit Record</button>
+    <button id="view-btn" class="open-form-btn btn btn-success m-1 disabled">View/Edit Record</button>
     <button id="del-btn"  class="open-form-btn btn btn-danger m-1 disabled">Delete Record</button>
 </div>
 

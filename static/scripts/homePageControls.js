@@ -7,6 +7,7 @@ const viewButton = document.getElementById("view-btn");
 const delButton = document.getElementById("del-btn");
 const checked = new Set();
 
+var editMode = false;
 var totalChecked = 0;
 
 // Disable view and edit buttons if totalChecked is zero or greater than
@@ -21,10 +22,10 @@ function checkButtons() {
     // Disabled by default.
     if (totalChecked === 0 || totalChecked > 1) {
         viewButton.classList.add("disabled");
-        editButton.classList.add("disabled");
+
     } else {
         viewButton.classList.remove("disabled");
-        editButton.classList.remove("disabled");
+
     }
 }
 
@@ -34,6 +35,29 @@ function closePopUps() {
     popups.forEach(i => {
         i.style.display = 'none';
     });
+}
+
+function toggleEditMode() {
+    var fields = document.querySelectorAll('[id$="-info"]')
+    if(!editMode) {
+        fields.forEach(i => {
+            i.classList.remove("form-control-plaintext");
+            i.classList.add("form-control");
+            i.removeAttribute('readonly');
+        });
+        document.getElementById("edit-btn-container").style.display = "none";
+        document.getElementById("changes-btn-container").style.display = "flex";
+        editMode = true;
+    } else {
+        fields.forEach(i => {
+            i.classList.remove("form-control");
+            i.classList.add("form-control-plaintext");
+            i.setAttribute('readonly', true);
+        });
+        document.getElementById("edit-btn-container").style.display = "flex";
+        document.getElementById("changes-btn-container").style.display = "none";
+        editMode = false;
+    }
 }
 
 // Add event listener to monitor status of checkbox for HEADER row
@@ -126,6 +150,9 @@ document.addEventListener('click', function (event) {
 
     if (!event.target.closest('.popup-form') && !event.target.closest('.open-form-btn')) {
         closePopUps();
+        if(editMode) {
+            toggleEditMode();
+        }
     }
 });
 
@@ -151,6 +178,18 @@ document.querySelector('#confirm-delete-button').addEventListener('click', (e) =
             console.error(error); // Log any errors for debugging
         }
     });
+});
+
+editButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleEditMode();
+});
+
+document.getElementById("cancel-changes-btn").addEventListener("click", (e) => {
+    e.preventDefault();
+    if (editMode) {
+        toggleEditMode();
+    }
 });
 
 // Reject confirmation to delete selected records. If clicked, close the "Delete Record" popup.

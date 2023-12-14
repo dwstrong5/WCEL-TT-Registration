@@ -64,6 +64,14 @@ body {
     margin-right: 0.2rem;
 }
 
+#edit-btn-container {
+    display: flex;
+}
+
+#changes-btn-container {
+    display: none;
+}
+
 @media only screen and (max-width: 768px) {
     .btn {
         padding: 0.25rem 0.5rem;
