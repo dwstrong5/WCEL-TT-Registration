@@ -1,4 +1,3 @@
-
 function phoneFormat(input) {//returns (###) ###-####
     input = input.replace(/\D/g,'');
     var size = input.length;

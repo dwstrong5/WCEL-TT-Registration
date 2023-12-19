@@ -200,15 +200,19 @@ def addRecord():
 
 @app.route("/delete-record", methods=["POST"])
 def deleteRecord():
-    string_ids = request.get_json()
-    if len(string_ids) <= 0:
-        return jsonify({'status': 400, 'message': 'Error deleting entry from database.'}), 400
-    elif len(string_ids) == 1:
-        entries.delete_one({"_id": ObjectId(request.get_json()[0])})
+    # If user is not logged in, redirect to login screen
+    if "email" not in session:
+        return redirect("/login")
     else:
-        object_ids = [ObjectId(str_id) for str_id in string_ids]
-        entries.delete_many({"_id": { "$in": object_ids }})
-    return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
+        string_ids = request.get_json()
+        if len(string_ids) <= 0:
+            return jsonify({'status': 400, 'message': 'Error deleting entry from database.'}), 400
+        elif len(string_ids) == 1:
+            entries.delete_one({"_id": ObjectId(request.get_json()[0])})
+        else:
+            object_ids = [ObjectId(str_id) for str_id in string_ids]
+            entries.delete_many({"_id": { "$in": object_ids }})
+        return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
 
 @app.route("/view-record", methods=["POST"])
 def viewRecord():
@@ -308,6 +312,23 @@ def logout():
         return render_template("login.html", message="Logged out successfully.")
     else:
         return render_template("login.html", message="No user currently signed in.")
+
+@app.route("/update-record", methods=["POST"])
+def updateRecord():
+    # If user is not logged in, redirect to login screen
+    if "email" not in session:
+        return redirect("/login")
+    else:
+        req = dict(request.get_json())
+        if((len(req) < 2) or ('_id' not in req.keys())):
+            return jsonify({'status': 400, 'message': 'Bad request. Did you provide an ID?'}), 400
+        else:
+            filter = {"_id": ObjectId(req.pop("_id"))}
+            values = {"$set": req}
+            if(entries.update_one(filter, values)):
+                return jsonify({'status': 200, 'message': 'Record updated successfully'}), 200
+            else:
+                return jsonify({'status': 500, 'message': 'Error updating database.'}), 500
 
 if __name__ == "__main__":
     app.run()
