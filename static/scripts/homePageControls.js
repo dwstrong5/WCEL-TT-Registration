@@ -263,3 +263,9 @@ document.getElementById("phone-info").addEventListener("input", (e) => {
     e.target.value = phoneFormat(e.target.value)
 });
 
+document.querySelectorAll('[id^="child-age"]').forEach(i => {
+    i.addEventListener("input", (e) => {
+        e.target.value = formatDate(e.target.value);
+    });
+});
+
