@@ -1,10 +1,6 @@
-const headerCheckbox = document.querySelector('#header-checkbox');
 const checkboxes = document.querySelectorAll("#data-checkbox");
 const buttons = document.querySelectorAll(".open-form-btn");
 const popups = document.querySelectorAll(".popup-form");
-const editButton = document.getElementById("edit-btn");
-const viewButton = document.getElementById("view-btn");
-const delButton = document.getElementById("del-btn");
 const checked = new Set();
 var editMode = false;
 var totalChecked = 0;
@@ -17,15 +13,15 @@ function checkButtons() {
     console.log(`Checked: ${totalChecked}, Unchecked: ${100 - totalChecked}`);
 
     // Enable 'Delete Record(s) button if at least 1 is checked. Disabled by default.
-    totalChecked > 0 ? delButton.classList.remove("disabled") : delButton.classList.add("disabled")
+    totalChecked > 0 ? document.getElementById("del-btn").classList.remove("disabled") : document.getElementById("del-btn").classList.add("disabled")
 
     // Enable View and Edit Record buttons if and only if one record is checked.
     // Disabled by default.
     if (totalChecked === 0 || totalChecked > 1) {
-        viewButton.classList.add("disabled");
+        document.getElementById("view-btn").classList.add("disabled");
 
     } else {
-        viewButton.classList.remove("disabled");
+        document.getElementById("view-btn").classList.remove("disabled");
 
     }
 }
@@ -90,7 +86,7 @@ function toggleEditMode() {
 }
 
 // Add event listener to monitor status of checkbox for HEADER row
-headerCheckbox.addEventListener('change', (e) => {
+document.querySelector('#header-checkbox').addEventListener('change', (e) => {
     if (e.target.checked) {
         checkboxes.forEach(i => {
             i.checked = true; 
@@ -206,7 +202,7 @@ document.querySelector('#confirm-delete-button').addEventListener('click', (e) =
     });
 });
 
-editButton.addEventListener("click", (e) => {
+document.getElementById("edit-btn").addEventListener("click", (e) => {
     e.preventDefault();
     toggleEditMode();
 });

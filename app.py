@@ -7,48 +7,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-# Language options for registration
-languages = ["Latin", 
-             "Spanish", 
-             "Portuguese", 
-             "German", 
-             "Japanese", 
-             "Korean", 
-             "Russian", 
-             "French", 
-             "Punjabi",
-             "Chinese",
-             "Mandarin",
-             "Arabic",
-             "Italian"
-             ]
-headers = {
-        '_id': "ID",
-        'date': "Date",
-        'parent-name': 'Guardian Name',
-        'relationship': "Relationship",
-        'email': 'Email',
-        'phone': 'Phone',
-        'languages': 'Languages',
-        'reference': 'Reference',
-        'consultation-photo-permission': 'Consultation Photo Permission',
-        'outreach-photo-permission': 'Media Photo Permission',
-        'child-name-1': 'Child 1',
-        'child-name-2': "Child 2",
-        'child-name-3': 'Child 3',
-        'child-name-4': 'Child 4',
-        'child-name-5': 'Child 5',
-        'child-age-1': 'Child 1 DOB',
-        'child-age-2': 'Child 2 DOB',
-        'child-age-3': 'Child 3 DOB',
-        'child-age-4': 'Child 4 DOB',
-        'child-age-5': 'Child 5 DOB',
-        'receiving-services-1': 'Receiving Services?',
-        'receiving-services-2': 'Receiving Services?',
-        'receiving-services-3': 'Receiving Services?',
-        'receiving-services-4': 'Receiving Services?',
-        'receiving-services-5': 'Receiving Services?',
-}
+
 
 def generatePreviewData(numRecords):
     records = entries.find({}).sort("date", -1).limit(numRecords)
@@ -79,6 +38,10 @@ db = client['toddler-time-registration']
 #entries = db.get_collection('entries')
 entries = db.get_collection('test-entries')
 users = db.get_collection('users')
+appServices = dict(db.get_collection('app-services').find_one({}))
+languages = appServices['languages']
+headers = appServices['headers']
+authorizedUsers = appServices['authorized-users']
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -131,49 +94,6 @@ def index():
         return render_template("register.html", languages = languages)
     else:
         return redirect("/")
-
-@app.route("/confirm-registration", methods=["GET", "POST"])
-def confirmRegistration():
-    if request.method=="POST":
-        id = entries.insert_one(generateNewEntry(request.form))
-        if(id):
-            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
-        else:
-            return redirect("/")
-    else:
-        return redirect("/")
-
-@app.route("/confirm-checkin", methods=["GET","POST"])
-def confirmCheckin():
-    if request.method == "POST":
-        id = entries.insert_one(generateNewEntry(request.form))
-        if(id):
-            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
-        else:
-            return redirect("/")
-    else:
-        return redirect("/checkin")
-
-@app.route("/checkin")
-def checkin():
-    return render_template("checkin.html")
-
-@app.route("/check_existing", methods=["GET","POST"])
-def check_existing():
-    if request.method == "POST":
-        currEntries = list(entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1))
-        if currEntries and len(currEntries) > 0:
-            currEntry = currEntries[0]
-            return render_template("review.html", entry=currEntry)
-        else:
-            return redirect("/")
-    else:
-        return redirect("/checkin")
-                
-@app.route("/login", methods=["GET"])
-def login():
-    if request.method == "GET":
-        return render_template("login.html")
     
 @app.route("/add-record", methods=['POST'])
 def addRecord():
@@ -197,6 +117,46 @@ def addRecord():
         return render_template("home.html", data=generatePreviewData(numRecords=10))
     else:
         return jsonify({'status': 400, 'message': 'Error inserting new entry into database.'}), 400
+    
+@app.route("/checkin")
+def checkin():
+    return render_template("checkin.html")
+
+@app.route("/check_existing", methods=["GET","POST"])
+def check_existing():
+    if request.method == "POST":
+        currEntries = list(entries.find({"phone": standardize(request.form["phone"])}).sort("date", -1))
+        if currEntries and len(currEntries) > 0:
+            currEntry = currEntries[0]
+            return render_template("review.html", entry=currEntry)
+        else:
+            return redirect("/")
+    else:
+        return redirect("/checkin")    
+
+@app.route("/confirm-checkin", methods=["GET","POST"])
+def confirmCheckin():
+    if request.method == "POST":
+        id = entries.insert_one(generateNewEntry(request.form))
+        if(id):
+            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+        else:
+            return redirect("/")
+    else:
+        return redirect("/checkin")
+    
+@app.route("/confirm-registration", methods=["GET", "POST"])
+def confirmRegistration():
+    if request.method=="POST":
+        id = entries.insert_one(generateNewEntry(request.form))
+        if(id):
+            return render_template("confirmation.html", entry=getChildNames(entries.find_one(id.inserted_id)))
+        else:
+            return redirect("/")
+    else:
+        return redirect("/")
+
+    
 
 @app.route("/delete-record", methods=["POST"])
 def deleteRecord():
@@ -213,21 +173,7 @@ def deleteRecord():
             object_ids = [ObjectId(str_id) for str_id in string_ids]
             entries.delete_many({"_id": { "$in": object_ids }})
         return jsonify({'status': 200, 'message': 'Record deleted successfully'}), 200
-
-@app.route("/view-record", methods=["POST"])
-def viewRecord():
-    req = request.get_json()
-    if len(req) != 1:
-        return jsonify({'status': 400, 'message': 'Error fetching ID.'}), 400
-    else:
-        target_id = req[0]
-        entry = entries.find_one({"_id": ObjectId(target_id)})
-        if (entry):
-            entry['_id'] = str(entry['_id'])
-            return jsonify({'status': 200, 'record': entry, 'message': 'Record retrieved successfully'}), 200
-        else:
-            return jsonify({'status': 400, 'message': 'Error fetching requested ID.'}), 400
-
+    
 
 @app.route("/download", methods=['POST'])
 def download():
@@ -260,12 +206,8 @@ def download():
         download_name="output.xlsx",
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-   
-    
-@app.route("/register", methods=["GET"])
-def register():
-    return render_template("registerUser.html")
-                
+
+
 @app.route("/home", methods=["GET", "POST"])
 def home():
     if request.method == "GET":
@@ -305,13 +247,50 @@ def home():
     # User is logged in and stored in session, render homepage
     return render_template("home.html", data=generatePreviewData(numRecords=10))
 
+
+
+    
+@app.route("/login", methods=["GET"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
+
+
 @app.route("/logout", methods=["GET"])
 def logout():
     if "email" in session:
         session.pop("email", None)
         return render_template("login.html", message="Logged out successfully.")
     else:
-        return render_template("login.html", message="No user currently signed in.")
+        return render_template("login.html", message="No user currently signed in.") 
+
+    
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if(request.method == "GET"):
+        return render_template("registerUser.html")
+    elif (request.method == "POST"):
+        username = request.form.get("email").strip()
+        password = request.form.get("password").strip()
+        confPassword = request.form.get("confirmPassword").strip()
+
+        if(username not in authorizedUsers):
+            return render_template("registerUser.html", message="Unauthorized access. Contact admin to create an account.")
+
+        if not username or not password or not confPassword:
+            return render_template("registerUser.html", message="Invalid attempt. Please try again.")
+        elif (password != confPassword):
+            return render_template("registerUser.html", message = "Passwords don't match. Please try again.")
+        else:
+            hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            try:
+                users.insert_one({"email": username, "password": hashed})
+                return render_template("login.html", message=f"User {username} created successfully. Please login.")
+            except pymongo.errors.DuplicateKeyError:
+                return render_template("registerUser.html", message = "Account already exists. Please login to continue.")
+                
+                
 
 @app.route("/update-record", methods=["POST"])
 def updateRecord():
@@ -329,6 +308,24 @@ def updateRecord():
                 return jsonify({'status': 200, 'message': 'Record updated successfully'}), 200
             else:
                 return jsonify({'status': 500, 'message': 'Error updating database.'}), 500
+            
+
+
+@app.route("/view-record", methods=["POST"])
+def viewRecord():
+    req = request.get_json()
+    if len(req) != 1:
+        return jsonify({'status': 400, 'message': 'Error fetching ID.'}), 400
+    else:
+        target_id = req[0]
+        entry = entries.find_one({"_id": ObjectId(target_id)})
+        if (entry):
+            entry['_id'] = str(entry['_id'])
+            return jsonify({'status': 200, 'record': entry, 'message': 'Record retrieved successfully'}), 200
+        else:
+            return jsonify({'status': 400, 'message': 'Error fetching requested ID.'}), 400
+        
+
 
 if __name__ == "__main__":
     app.run()
