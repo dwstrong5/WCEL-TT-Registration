@@ -35,8 +35,8 @@ except Exception as e:
     print(e)
 
 db = client['toddler-time-registration']
-#entries = db.get_collection('entries')
-entries = db.get_collection('test-entries')
+entries = db.get_collection('entries')
+#entries = db.get_collection('test-entries')
 users = db.get_collection('users')
 appServices = dict(db.get_collection('app-services').find_one({}))
 languages = appServices['languages']
