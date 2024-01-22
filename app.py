@@ -21,9 +21,6 @@ def generatePreviewData(numRecords):
         res.loc[len(res)] = new_row
     return res.fillna('')
 
-# Establish connection with database
-with open('config.txt') as f:
-    credentials = json.load(f)
 
 uri = "mongodb+srv://" + os.environ.get("MONGO_USERNAME") + ":" + os.environ.get("MONGO_PASS") + "@wcel-cluster.wtcxphf.mongodb.net/?retryWrites=true&w=majority"
 client = pymongo.MongoClient(uri, tlsCAFile=certifi.where())
@@ -36,7 +33,6 @@ except Exception as e:
 
 db = client['toddler-time-registration']
 entries = db.get_collection('entries')
-#entries = db.get_collection('test-entries')
 users = db.get_collection('users')
 appServices = dict(db.get_collection('app-services').find_one({}))
 languages = appServices['languages']
@@ -130,7 +126,7 @@ def check_existing():
             currEntry = currEntries[0]
             return render_template("review.html", entry=currEntry)
         else:
-            return redirect("/")
+            return redirect("/registration")
     else:
         return redirect("/checkin")    
 

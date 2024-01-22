@@ -7,7 +7,7 @@
 
 {% block body %}
 <script src="../static/scripts/formatInput.js"></script>
-<div class="content-container">
+<div class="content-container container container-fluid p-0">
     <!-- <img src="../static/images/accessibility.png" alt="Launch Recite Me assistive technology" id="enableRecite" /> -->
     <div class="logo-container">
         <a href='https://www.wcel.net'>
@@ -16,9 +16,9 @@
     </div>
     
     <div class="check-in-greeting-container">
-        <h1>Welcome to Toddler Time!</h1>
-        <p>Please enter your phone number below.</p>
-        <p>If this is your first time joining us, please complete your registration <a href="/registration">here.</a></p>
+        <h1 id="greeting" class="display-3">Welcome to Toddler Time!</h1>
+        <p class="display-5">Please enter your phone number below.</p>
+        <p id="register-tag" class="display-5 p-3 fw-bolder">If this is your first time joining us, please complete your registration <a href="/registration">here.</a></p>
         <small><span>* </span> indicates required fields.</small>
     </div>
     
