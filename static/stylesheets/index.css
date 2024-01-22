@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    padding:0;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.content-container {
+    margin: 0;
+    padding:0;
+    min-width: 100%;
+    height: 100vh;
+}
+
+.image-content-container {
+    background-image: url("../images/alt_tt_banner.jpeg");
+    background-size: cover;
+}
+
+
+.banner-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 10px 30px #888888;
+    content: url("../images/alt_tt_banner.jpeg");
+    object-fit: cover;
+}
+
+.navigation-container {
+    background-color: rgba(255, 255, 255, .9);
+    border-radius: 12px;
+}
+
+#register-btn {
+    background-color: #487EFC;
+    border:none;
+    font-size: 14pt;
+}
+
+#register-btn:hover {
+    cursor: pointer;
+    background-color: #2B689C;
+}
+
+
+#checkin-btn {
+    background-color: #2B689C;
+    border: none;
+    font-size:14pt
+}
+
+#checkin-btn:hover {
+    cursor: pointer;
+    background-color: #1f517d;
+}
+
+@media only screen and (min-width: 768px) {
+
+    h1 {
+        font-size: 80%;
+    }
+
+    #register-btn, #checkin-btn {
+        font-size: 18pt;
+    }
+}
+

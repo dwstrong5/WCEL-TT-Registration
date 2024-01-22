@@ -91,7 +91,7 @@ def standardize(num):
 @app.route("/", methods=["GET"])
 def index():
     if request.method == "GET":
-        return render_template("register.html", languages = languages)
+        return render_template("index.html")
     else:
         return redirect("/")
     
@@ -290,7 +290,13 @@ def register():
             except pymongo.errors.DuplicateKeyError:
                 return render_template("registerUser.html", message = "Account already exists. Please login to continue.")
                 
-                
+@app.route("/registration", methods=["GET"])
+def registration():
+    if request.method == "GET":
+        return render_template("register.html", languages = languages)
+    else:
+        return redirect("/")
+
 
 @app.route("/update-record", methods=["POST"])
 def updateRecord():
