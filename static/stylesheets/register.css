@@ -2,8 +2,21 @@ body {
     max-width: 100%;
     margin: 0;
     padding: 0;
+    background-image: url("../images/registration_background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
+.content-container {
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 12px;
+}
+
+#checkin-tag {
+    background-color: rgb(252,187,95);
+    border-radius: 12px;
+}
 
 .logo-container {
     display: flex;
@@ -78,9 +91,10 @@ body {
 }
 
 
-h1 {
-    margin-top: 2.5rem;
-    margin-bottom: 0;
+#greeting {
+    text-wrap: wrap;
+    text-align: center;
+    text-justify: center;
 }
 
 .form-container {

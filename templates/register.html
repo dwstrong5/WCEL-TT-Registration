@@ -22,10 +22,10 @@
     </div>
     
     
-    <div class="greeting-container">
-        <h1 class="display display-1">Welcome to Toddler Time!</h1>
-        <h3 class="display display-5">If this is your first time joining us, please provide the following information to complete registration.</h1>
-        <h1 class="display display-5">If you've been with us before, check-in <a href="checkin">here.</a></h1>
+    <div class="greeting-container d-flex flex-column justify-content-center">
+        <h1 id="greeting" class="display-3">Welcome to Toddler Time!</h1>
+        <p class="display-5">If this is your first time joining us, please provide the following information to complete registration.</p>
+        <p id="checkin-tag" class="display-5 p-3 fw-bolder">If you've been with us before, check-in <a href="checkin">here.</a></p>
         <small><span>* </span> indicates required fields.</small>
     </div>
     
@@ -56,19 +56,19 @@
             <div class='relationship-container'>
                 <div class="relationship-option-container">
                     <input type="radio" id="relationship" name="relationship" value="Parent" />
-                    <label>Parent</label>
+                    <label class="mx-1">Parent</label>
                 </div>
                 <div class="relationship-option-container">
                     <input type="radio" id="relationship" name="relationship" value="Grandparent" />
-                    <label>Grandparent</label>
+                    <label class="mx-1">Grandparent</label>
                 </div>
                 <div class="relationship-option-container">
                     <input type="radio" id="relationship" name="relationship" value="Guardian" />
-                    <label>Legal Guardian</label>
+                    <label class="mx-1">Legal Guardian</label>
                 </div>
                 <div class="relationship-option-container">
                     <input type="radio" id="relationship" name="relationship" value="Nanny" />
-                    <label>Nanny</label>
+                    <label class="mx-1">Nanny</label>
                 </div>
                 <input  id="other-relationship" type="text" id="relationship" name="relationship" placeholder="Other..." />
             </div>
